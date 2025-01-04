@@ -24,7 +24,8 @@
 6. **Deployment Design**
    - Deployment Plan
    - Docker Configuration
-7. **Appendices**
+7. **Technology Stack**
+8. **Appendices**
    - References
 
 ---
@@ -117,6 +118,7 @@ The system follows a three-tier architecture:
 - **Reservations**:
   - `id` (Primary Key), `guest_id` (Foreign Key), `room_id` (Foreign Key), `start_date`, `end_date`, `status`, `created_at`, `updated_at`
 
+![alt text](image-1.png)
 #### API Endpoints
 1. **Guests**:
    - `GET /guests`: List guests (paginated).
@@ -167,7 +169,45 @@ The system follows a three-tier architecture:
 
 ---
 
-### 7. Appendices
+### 7. Technology Stack
+
+#### Core Technology Stack
+1. **Frontend**:
+   - Angular with TypeScript for building user interfaces.
+   - Taiga UI for component design.
+   - Tailwind CSS (optional) for styling.
+
+2. **Backend**:
+   - Node.js with Express.js for handling API requests.
+   - TypeScript for type safety and maintainability.
+   - Knex.js for database queries and migration handling.
+
+3. **Database**:
+   - PostgreSQL as the primary relational database.
+
+4. **Testing**:
+   - Jest for writing and executing unit and integration tests.
+
+5. **Version Control**:
+   - Git for tracking changes and collaboration.
+   - GitHub for repository hosting.
+
+#### Bonus Technologies
+1. **Typebox**:
+   - For defining types and validations.
+   - Used to ensure strong typing and avoid code duplication.
+
+2. **Deployment**:
+   - Docker and Docker Compose for containerized deployment.
+   - NGINX as a reverse proxy to route frontend and backend requests behind a single domain.
+   - Deployment to a live server (e.g., AWS, Azure, or DigitalOcean).
+
+3. **Integration Testing**:
+   - API integration tests using Jest to validate API responses and ensure system robustness.
+
+---
+
+### 8. Appendices
 
 #### References
 1. [PostgreSQL Documentation](https://www.postgresql.org/docs/)
