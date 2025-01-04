@@ -25,7 +25,8 @@
    - Deployment Plan
    - Docker Configuration
 7. **Technology Stack**
-8. **Appendices**
+8. **UI Wireframes**
+9. **Appendices**
    - References
 
 ---
@@ -206,8 +207,34 @@ The system follows a three-tier architecture:
    - API integration tests using Jest to validate API responses and ensure system robustness.
 
 ---
+### 8. UI Wireframes
 
-### 8. Appendices
+This section contains wireframes for the main user interface elements of the system. These wireframes focus on the functionality and user experience design of the application.
+
+#### Wireframe Details
+1. **Guest List View**:
+   - Displays a paginated list of all guests.
+   - Provides options to view, edit, or delete guest details.
+
+2. **Room List View**:
+   - Shows a paginated list of all rooms with sorting options.
+   - Includes details such as room name, number, and reservation statistics.
+
+3. **Reservation Calendar View**:
+   - Displays existing reservations in a calendar format.
+   - Highlights busy days and allows users to navigate by month.
+
+4. **Reservation Form**:
+   - Provides an interface for creating reservations by selecting guests, rooms, and date ranges.
+   - Includes validation for overlapping reservations and invalid dates.
+
+5. **Guest Details Page**:
+   - Shows a guest’s detailed information, including past and upcoming reservations.
+
+Each wireframe will be illustrated in the appendices and linked to the corresponding UI functionality.
+
+---
+### 9. Appendices
 
 #### References
 1. [PostgreSQL Documentation](https://www.postgresql.org/docs/)
