@@ -137,10 +137,8 @@ The system follows a three-tier architecture:
   - `id` (Primary Key), `guest_id` (Foreign Key), `room_id` (Foreign Key), `start_date`, `end_date`, `status`, `created_at`, `updated_at`
 - **Reservation_Rooms**:
   - `id` (Primary Key), `reservation_id` (Foreign Key), `room_id` (Foreign Key)
-  
+
 ![alt text](image.png)
-
-
 
 #### API Endpoints
 
@@ -257,23 +255,48 @@ This section contains wireframes for the main user interface elements of the sys
    - Displays a paginated list of all guests.
    - Provides options to view, edit, or delete guest details.
 
-2. **Room List View**:
+   ![guest-list](./images/guest-management.png)
+
+2. **Guest Details Page**:
+
+   - Shows a guest’s detailed information, including past and upcoming reservations.
+
+   ![guest-details](./images/guest-details.png)
+
+3. **Room List View**:
 
    - Shows a paginated list of all rooms with sorting options.
    - Includes details such as room name, number, and reservation statistics.
 
-3. **Reservation Calendar View**:
+   ![room-list](./images/rooms-management.png)
+
+4. **Room Details Page**:
+
+   - Displays detailed information about a room, including capacity and reservation history.
+
+   ![room-details](./images/room-details.png)
+
+5. **Reservation Calendar View**:
 
    - Displays existing reservations in a calendar format.
    - Highlights busy days and allows users to navigate by month.
+   - Calendar indicates the number of reservations on each day.
 
-4. **Reservation Form**:
+   ![reservation-calendar](./images/reservations-calandar.png)
+
+6. **Reservations Table**:
+
+   - Shows a paginated list of all reservations.
+   - Includes details such as guest name, room number, and reservation dates.
+
+   ![reservations-table](./images/reservations-table.png)
+
+7. **Reservation Form**:
 
    - Provides an interface for creating reservations by selecting guests, rooms, and date ranges.
    - Includes validation for overlapping reservations and invalid dates.
 
-5. **Guest Details Page**:
-   - Shows a guest’s detailed information, including past and upcoming reservations.
+   ![reservation-form](./images/new-reservation.png)
 
 Each wireframe will be illustrated in the appendices and linked to the corresponding UI functionality.
 
