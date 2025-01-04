@@ -1,18 +1,17 @@
 import { Knex } from "knex";
 
 const config: Knex.Config = {
-  client: "mysql2",
+  client: "pg",
   connection: {
-    host: "127.0.0.1",
-    port: 3306,
-    user: "database_username or root",
-    password: "database_password",
-    database: "todo",
+    host: process.env.DB_HOST || "localhost",
+    port: parseInt(process.env.DB_PORT || "5432"),
+    user: process.env.DB_USER || "",
+    password: process.env.DB_PASSWORD || "",
+    database: process.env.DB_NAME || "",
   },
   migrations: {
-    directory: "./db/migrations",
+    directory: "./src/db/migrations",
   },
-
 };
 
 export default config;
