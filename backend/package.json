@@ -12,7 +12,9 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/knex": "^0.15.2",
     "@types/node": "^22.10.5",
+    "@types/pg": "^8.11.10",
     "typescript": "^5.7.2"
   },
   "dependencies": {
@@ -21,7 +23,9 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "knex": "^3.1.0",
     "nodemon": "^3.1.9",
+    "pg": "^8.13.1",
     "ts-node": "^10.9.2"
   }
 }
