@@ -9,7 +9,7 @@ const createFakeGuest = () => ({
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
-  await knex("guests").truncate();
+  await knex("guests").del();
 
   const fakeGuests = [];
   const desiredFakeGuests = 100;
@@ -18,7 +18,5 @@ export async function seed(knex: Knex): Promise<void> {
   }
 
   // Inserts seed entries
-  await knex("guests").insert(
-    fakeGuests
-  );
+  await knex("guests").insert(fakeGuests);
 }

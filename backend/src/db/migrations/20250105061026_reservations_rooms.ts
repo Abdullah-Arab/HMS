@@ -7,8 +7,14 @@ export async function up(knex: Knex): Promise<void> {
       .integer("reservation_id")
       .notNullable()
       .references("id")
-      .inTable("reservations");
-    table.integer("room_id").notNullable().references("id").inTable("rooms");
+      .inTable("reservations")
+      .onDelete("CASCADE");
+    table
+      .integer("room_id")
+      .notNullable()
+      .references("id")
+      .inTable("rooms")
+      .onDelete("CASCADE");
     table.timestamp("created_at").defaultTo(knex.fn.now());
     table.timestamp("updated_at").defaultTo(knex.fn.now());
   });

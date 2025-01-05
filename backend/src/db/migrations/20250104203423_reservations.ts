@@ -10,7 +10,8 @@ export async function up(knex: Knex): Promise<void> {
           .integer("guest_id")
           .notNullable()
           .references("id")
-          .inTable("public.guests");
+          .inTable("guests")
+          .onDelete("CASCADE");
         table.timestamp("check_in").notNullable();
         table.timestamp("check_out").notNullable();
         table.timestamp("created_at").defaultTo(knex.fn.now());
