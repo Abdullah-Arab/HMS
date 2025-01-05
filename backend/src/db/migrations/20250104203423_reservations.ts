@@ -14,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
     table
       .text("status")
       .notNullable()
-      .defaultTo("confirmed")
+      .defaultTo("pending")
       .checkIn(["confirmed", "cancelled", "pending"]);
     table.timestamp("created_at").defaultTo(knex.fn.now());
     table.timestamp("updated_at").defaultTo(knex.fn.now());
