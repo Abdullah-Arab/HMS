@@ -3,7 +3,7 @@ import { ValueError } from "@sinclair/typebox/errors";
 import { Request, Response, NextFunction } from "express";
 
 // Middleware to validate the input
-function validate(schema: any) {
+export function validate(schema: any) {
   return (req: Request, res: Response, next: NextFunction) => {
     const isValid = Value.Check(schema, req.body);
 
