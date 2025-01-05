@@ -2,17 +2,20 @@ import type { Knex } from "knex";
 
 
 export async function up(knex: Knex): Promise<void> {
-    return knex.schema.createTable(
-        "reservations",
-        (table)=>{
-            table.increments("id").primary().unique();
-            table.integer("guest_id").notNullable().references("id").inTable("guests");
-            table.timestamp("check_in").notNullable();
-            table.timestamp("check_out").notNullable();
-            table.timestamp("created_at").defaultTo(knex.fn.now());
-            table.timestamp("updated_at").defaultTo(knex.fn.now());
-        }
-    );
+    return knex.schema
+
+      .createTable("reservations", (table) => {
+        table.increments("id").primary().unique();
+        table
+          .integer("guest_id")
+          .notNullable()
+          .references("id")
+          .inTable("public.guests");
+        table.timestamp("check_in").notNullable();
+        table.timestamp("check_out").notNullable();
+        table.timestamp("created_at").defaultTo(knex.fn.now());
+        table.timestamp("updated_at").defaultTo(knex.fn.now());
+      });
 }
 
 
