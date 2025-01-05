@@ -1,9 +1,17 @@
-export default interface Reservation {
-    id: string;
-    guest_id: string;
-    room_ids: string[];
-    checkin_date: string;
-    checkout_date: string;
-    createdAt: string;
-    updatedAt: string;
-}
+import { Type, type Static } from "@sinclair/typebox";
+
+
+const Reservation = Type.Object({
+  id: Type.String(),
+  guest_id: Type.String(),
+  room_ids: Type.Array(Type.String()),
+  checkin_date: Type.String(),
+  checkout_date: Type.String(),
+  createdAt: Type.String(),
+  updatedAt: Type.String(),
+});
+
+type Reservation = Static<typeof Reservation>;
+
+export { Reservation };
+
