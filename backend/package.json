@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "update-types": "node src/db/update-types"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "knex": "^3.1.0",
+    "knex-types": "^0.5.0",
     "nodemon": "^3.1.9",
     "pg": "^8.13.1",
     "ts-node": "^10.9.2"
