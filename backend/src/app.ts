@@ -2,6 +2,7 @@
 import express, { Request, Response } from "express";
 import { errorHandler } from "./middleware/errorHandler";
 import cors from "cors";
+import guestRoutes from "./routes/v1/guestRoutes";
 
 // Create an Express application
 const app = express();
@@ -14,13 +15,12 @@ app.use(errorHandler);
 // app.use(morgan("dev"));
 
 // routes here
+app.use("/api/v1/guests", guestRoutes);
 
 // Define a route for the root path ('/')
 app.get("/", (req: Request, res: Response) => {
   // Send a response to the client
   res.send("server is running");
 });
-
-
 
 export default app;
