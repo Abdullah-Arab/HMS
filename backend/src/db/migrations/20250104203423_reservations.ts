@@ -14,6 +14,7 @@ export async function up(knex: Knex): Promise<void> {
           .onDelete("CASCADE");
         table.timestamp("check_in").notNullable();
         table.timestamp("check_out").notNullable();
+        table.text("status").notNullable();
         table.timestamp("created_at").defaultTo(knex.fn.now());
         table.timestamp("updated_at").defaultTo(knex.fn.now());
       });
