@@ -2,8 +2,11 @@ import { Request, Response } from "express";
 import guestService from "../services/guestService";
 import asyncHandler from "express-async-handler";
 import { formatResponse } from "../utils/fromatResponse";
+import { handleError } from "../utils/errorHandler";
 
 class GuestController {
+ 
+
   getGuests = asyncHandler(async (req: Request, res: Response) => {
     try {
       const page = parseInt(req.query.page as string, 10) || 1;
@@ -22,33 +25,8 @@ class GuestController {
           )
         );
     } catch (error) {
-      if (error instanceof Error) {
-        // Handle known error types
-        res
-          .status(500)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to retrieve guests",
-              undefined,
-              undefined,
-              error.message
-            )
-          );
-      } else {
-        // Handle unknown error types
-        res
-          .status(500)
-          .json(
-            formatResponse(
-              "error",
-              "An unknown error occurred",
-              undefined,
-              undefined,
-              "Unknown error"
-            )
-          );
-      }
+            handleError(res, "Failed to retrieve guests", error);
+
     }
   });
   createGuest = asyncHandler(async (req: Request, res: Response) => {
@@ -58,32 +36,7 @@ class GuestController {
         .status(201)
         .json(formatResponse("success", "Guest created successfully", guest));
     } catch (error) {
-      if (error instanceof Error){
-        res
-          .status(400)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to create guest",
-              undefined,
-              undefined,
-              error.message
-            )
-          );
-      } else {
-        res
-          .status(400)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to create guest",
-              undefined,
-              undefined,
-              "Unknown error"
-            )
-          );
-      }
-          
+      handleError(res, "Failed to create guest", error);
     }
   });
 
@@ -92,38 +45,14 @@ class GuestController {
       const guest = await guestService.getGuestById(req.params.id);
 
       if (!guest) {
-         res.status(404).json(formatResponse("error", "Guest not found"));
+        res.status(404).json(formatResponse("error", "Guest not found"));
       }
 
       res
         .status(200)
         .json(formatResponse("success", "Guest retrieved successfully", guest));
     } catch (error) {
-      if (error instanceof Error){
-        res
-          .status(500)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to retrieve guest",
-              undefined,
-              undefined,
-              error.message
-            )
-          );
-      } else {
-        res
-          .status(500)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to retrieve guest",
-              undefined,
-              undefined,
-              "Unknown error"
-            )
-          );
-      }
+      handleError(res, "Failed to retrieve guest", error);
     }
   });
 
@@ -132,39 +61,14 @@ class GuestController {
       const guest = await guestService.updateGuest(req.params.id, req.body);
 
       if (!guest) {
-         res.status(404).json(formatResponse("error", "Guest not found"));
+        res.status(404).json(formatResponse("error", "Guest not found"));
       }
 
       res
         .status(200)
         .json(formatResponse("success", "Guest updated successfully", guest));
     } catch (error) {
-      if (error instanceof Error){
-        res
-          .status(400)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to update guest",
-              undefined,
-              undefined,
-              error.message
-            )
-          );
-      }
-      else {
-        res
-          .status(400)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to update guest",
-              undefined,
-              undefined,
-              "Unknown error"
-            )
-          );
-      }
+      handleError(res, "Failed to update guest", error);
     }
   });
 
@@ -173,7 +77,7 @@ class GuestController {
       const guest = await guestService.getGuestById(req.params.id);
 
       if (!guest) {
-         res.status(404).json(formatResponse("error", "Guest not found"));
+        res.status(404).json(formatResponse("error", "Guest not found"));
       }
 
       await guestService.deleteGuest(req.params.id);
@@ -181,32 +85,7 @@ class GuestController {
         .status(200)
         .json(formatResponse("success", "Guest deleted successfully"));
     } catch (error) {
-      if (error instanceof Error){
-        res
-          .status(500)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to delete guest",
-              undefined,
-              undefined,
-              error.message
-            )
-          );
-      }
-      else {
-        res
-          .status(500)
-          .json(
-            formatResponse(
-              "error",
-              "Failed to delete guest",
-              undefined,
-              undefined,
-              "Unknown error"
-            )
-          );
-      }
+      handleError(res, "Failed to delete guest", error);
     }
   });
 }
