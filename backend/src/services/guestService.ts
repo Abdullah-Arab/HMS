@@ -1,9 +1,13 @@
-import { getGuestsFromDB, createGuestInDB } from "../models/guestModel";
+import guestModel from "../models/guestModel";
 
-export const getAllGuests = async () => {
-  return await getGuestsFromDB();
-};
+class GuestService {
+  getAllGuests = async () => {
+    return await guestModel.getGuestsFromDB();
+  };
 
-export const addGuest = async (guestData: any) => {
-  return await createGuestInDB(guestData);
-};
+  addGuest = async (guestData: any) => {
+    return await guestModel.createGuestInDB(guestData);
+  };
+}
+
+export default new GuestService();

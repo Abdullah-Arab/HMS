@@ -1,9 +1,9 @@
 import express from "express";
-import { getGuests, createGuest } from "../../controllers/guestController";
+import guestController from "../../controllers/guestController";
 
 const router = express.Router();
 
-router.get("/", getGuests); // GET /guests
-router.post("/", createGuest); // POST /guests
+router.get("/", guestController.getGuests); // GET /guests
+router.post("/", guestController.createGuest); // POST /guests
 
 export default router;
