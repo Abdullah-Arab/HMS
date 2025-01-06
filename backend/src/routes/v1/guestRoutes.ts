@@ -6,15 +6,11 @@ import { validate } from "../../middleware/validateRequest";
 
 const router = express.Router();
 
-//todo: input validation
-
-
 router.get("/", guestController.getGuests); // GET /guests : no input required
-router.post("/", guestController.createGuest); // POST /guests : requires input
 
 // schema for input validation using typebox
 const GuestIdSchema = Type.Object({
-  id: Type.Number(),
+  id: Type.String(), // Change to Type.String() for route params
 });
 router.get("/:id", validate(GuestIdSchema), guestController.getGuestById); // GET /guests/:id : requires input
 router.put("/:id", validate(GuestIdSchema), guestController.updateGuest); // PUT /guests/:id : requires input

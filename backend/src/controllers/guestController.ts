@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import guestService from "../services/guestService";
 import asyncHandler from "express-async-handler";
 
-
-//todo: handle responses
 class GuestController {
   getGuests = asyncHandler(async (req: Request, res: Response) => {
     const guests = await guestService.getAllGuests();
@@ -25,7 +23,7 @@ class GuestController {
     res.status(200).json(guest);
   });
 
-  deleteGuest =asyncHandler( async (req: Request, res: Response) => {
+  deleteGuest = asyncHandler(async (req: Request, res: Response) => {
     await guestService.deleteGuest(req.params.id);
     res.status(204).send();
   });

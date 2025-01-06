@@ -1,26 +1,41 @@
 import db from "../db";
-
+import { Guest } from "../types/Guest";
 
 class GuestModel {
-  getGuestsFromDB = async () => {
+  // Get all guests
+  getGuestsFromDB = async (): Promise<Guest[]> => {
     return await db("guests").select("*");
   };
 
-  createGuestInDB = async (guestData: any) => {
-    return await db("guests").insert(guestData).returning("*");
+  // Create a new guest
+  createGuestInDB = async (
+    guestData: Omit<Guest, "id" | "created_at" | "updated_at">
+  ): Promise<Guest> => {
+    const [newGuest] = await db("guests").insert(guestData).returning("*");
+    return newGuest;
   };
 
-  getGuestByIdFromDB = async (id: number) => {
+  // Get a guest by ID
+  getGuestByIdFromDB = async (id: string): Promise<Guest | null> => {
     return await db("guests").where({ id }).first();
-  }
+  };
 
-  updateGuestInDB = async (id: number, guestData: any) => {
-    return await db("guests").where({ id }).update(guestData).returning("*");
-  }
+  // Update an existing guest
+  updateGuestInDB = async (
+    id: string,
+    guestData: Partial<Omit<Guest, "id" | "created_at" | "updated_at">>
+  ): Promise<Guest | null> => {
+    const [updatedGuest] = await db("guests")
+      .where({ id })
+      .update(guestData)
+      .returning("*");
+    return updatedGuest;
+  };
 
-  deleteGuestFromDB = async (id: number) => {
-    return await db("guests").where({ id }).delete();
-  }
+  // Delete a guest by ID
+  deleteGuestFromDB = async (id: string): Promise<void> => {
+    await db("guests").where({ id }).delete();
+  };
 }
 
 export default new GuestModel();
