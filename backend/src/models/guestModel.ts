@@ -3,8 +3,13 @@ import { Guest } from "../types/Guest";
 
 class GuestModel {
   // Get all guests
-  getGuestsFromDB = async (): Promise<Guest[]> => {
-    return await db("guests").select("*");
+  getGuestsFromDB = async (offset: number, limit: number) => {
+    return await db("guests").select("*").offset(offset).limit(limit);
+  };
+
+  getGuestsCount = async (): Promise<number> => {
+    const [{ count }] = await db("guests").count("* as count");
+    return Number(count);
   };
 
   // Create a new guest

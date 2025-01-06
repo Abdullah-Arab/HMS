@@ -2,8 +2,19 @@ import guestModel from "../models/guestModel";
 import { Guest } from "../types/Guest";
 
 class GuestService {
-  getAllGuests = async (): Promise<Guest[]> => {
-    return await guestModel.getGuestsFromDB();
+  getAllGuests = async (page: number = 1, limit: number = 10) => {
+    const offset = (page - 1) * limit;
+    const guests = await guestModel.getGuestsFromDB(offset, limit);
+    const total = await guestModel.getGuestsCount(); // Get total count of guests
+    return {
+      data: guests,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   };
 
   addGuest = async (
