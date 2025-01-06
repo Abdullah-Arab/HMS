@@ -13,23 +13,23 @@ router.get("/", validate(GetGuestsQuerySchema), guestController.getGuests); // G
 
 // schema for input validation using typebox
 const GuestIdSchema = Type.Object({
-  id: Type.String(), // Change to Type.String() for route params
+  id: Type.String(), 
 });
 router.get(
   "/:id",
   validate(GuestIdSchema, "params"),
   guestController.getGuestById
-);
+); // GET /guests/:id : requires input
 router.put(
   "/:id",
   validate(GuestIdSchema, "params"),
   guestController.updateGuest
-);
+); // PUT /guests/:id : requires input
 router.delete(
   "/:id",
   validate(GuestIdSchema, "params"),
   guestController.deleteGuest
-);
+); // DELETE /guests/:id : requires input
 
 // schema for input validation using typebox
 const AddGuestSchema = Type.Object({
