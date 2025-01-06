@@ -3,6 +3,7 @@ import guestController from "../../controllers/guestController";
 import { Type } from "@sinclair/typebox";
 import { validate } from "../../middleware/validateRequest";
 
+
 const router = express.Router();
 
 //todo: input validation
