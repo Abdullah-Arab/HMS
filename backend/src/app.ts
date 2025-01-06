@@ -2,7 +2,8 @@
 import express, { Request, Response } from "express";
 import { errorHandler } from "./middleware/errorHandler";
 import cors from "cors";
-import guestRoutes from "./routes/v1/guestRoutes";
+import guestRoute from "./routes/v1/guestRoute";
+import roomRoute from "./routes/v1/roomRoute";
 
 // Create an Express application
 const app = express();
@@ -15,7 +16,9 @@ app.use(errorHandler);
 // app.use(morgan("dev"));
 
 // routes here
-app.use("/api/v1/guests", guestRoutes);
+app.use("/api/v1/guests", guestRoute);
+app.use("/api/v1/rooms", roomRoute);
+
 
 // Define a route for the root path ('/')
 app.get("/", (req: Request, res: Response) => {
