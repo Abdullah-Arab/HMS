@@ -5,8 +5,6 @@ import { formatResponse } from "../utils/fromatResponse";
 import { handleError } from "../utils/errorHandler";
 
 class GuestController {
- 
-
   getGuests = asyncHandler(async (req: Request, res: Response) => {
     try {
       const page = parseInt(req.query.page as string, 10) || 1;
@@ -25,8 +23,7 @@ class GuestController {
           )
         );
     } catch (error) {
-            handleError(res, "Failed to retrieve guests", error);
-
+      handleError(res, "Failed to retrieve guests", error);
     }
   });
   createGuest = asyncHandler(async (req: Request, res: Response) => {
@@ -46,6 +43,7 @@ class GuestController {
 
       if (!guest) {
         res.status(404).json(formatResponse("error", "Guest not found"));
+        return;
       }
 
       res
@@ -62,6 +60,7 @@ class GuestController {
 
       if (!guest) {
         res.status(404).json(formatResponse("error", "Guest not found"));
+        return;
       }
 
       res
