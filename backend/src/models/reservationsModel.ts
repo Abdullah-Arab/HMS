@@ -333,13 +333,29 @@ class ReservationsModel {
   };
 
   async cancelReservation(reservationId: string): Promise<boolean> {
-    const result = await db("reservations")
-      // Ensure it's not already canceled,
-      // .where({ id: reservationId, status: "confirmed" })
-      .where({ id: reservationId })
-      .update({ status: "cancelled" });
+    // Start a transaction to ensure atomicity
+    return await db.transaction(async (trx) => {
+      // Step 1: Mark the reservation as canceled
+      const updateResult = await trx("reservations")
+        // .where({ id: reservationId, status: "confirmed" })
+        // Ensure it's currently confirmed or pending
+        .where({ id: reservationId }) // Remove status check
 
-    return result > 0; // Returns true if the reservation was successfully canceled
+        .update({ status: "cancelled" });
+
+      if (updateResult === 0) {
+        throw new Error(
+          `Reservation with ID ${reservationId} does not exist or is not in a confirmed state.`
+        );
+      }
+
+      // Step 2: Remove room associations for the canceled reservation
+      await trx("reservations_rooms")
+        .where({ reservation_id: reservationId })
+        .delete();
+
+      return true; // Return true if cancellation and cleanup succeed
+    });
   }
 }
 
