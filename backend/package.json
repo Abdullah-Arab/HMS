@@ -20,6 +20,8 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "-": "^0.0.1",
+    "@angular/cli": "^19.0.6",
     "@sinclair/typebox": "^0.34.13",
     "@types/ajv": "^0.0.5",
     "@types/cors": "^2.8.17",
@@ -32,6 +34,7 @@
     "express": "^4.21.2",
     "express-async-handler": "^1.2.0",
     "faker": "^5.5.3",
+    "g": "^2.0.1",
     "knex": "^3.1.0",
     "knex-types": "^0.5.0",
     "nodemon": "^3.1.9",
