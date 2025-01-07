@@ -2,8 +2,8 @@ import reservationsModel from "../models/reservationsModel";
 import { Reservation } from "../types/Reservation";
 
 
-// todo: retrieve upcoming/past reservations for specific guest/room sorted by most recent
-// todo: total amount of upcoming reservations for specific guest/room
+// --todo: retrieve upcoming/past reservations for specific guest/room sorted by most recent--
+// --todo: total amount of upcoming reservations for specific guest/room--
 // todo: current reservation for specific guest/room
 // todo: when creating a reservation, check if room is available
 // todo: when creating a reservation, validate check-in and check-out dates
@@ -112,6 +112,18 @@ class ReservationsService {
         totalPages: Math.ceil(total / limit),
       },
     };
+  };
+ 
+  getCurrentReservation = async (guestId?: string, roomId?: string) => {
+    // at least one of guestId or roomId must be provided
+    if (!guestId && !roomId) {
+      throw new Error(
+        "Either guestId or roomId must be provided to fetch the current reservation."
+      );
+    }
+
+    // Fetch current reservation from the model
+    return await reservationsModel.getCurrentReservation(guestId, roomId);
   };
 }
 

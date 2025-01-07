@@ -47,6 +47,7 @@ class ReservationsModel {
   deleteReservationsFromDB = async (id: string): Promise<void> => {
     await db("reservations").where({ id }).delete();
   };
+
   getUpcomingReservations = async (
     guestId?: string,
     roomId?: string,
@@ -151,6 +152,28 @@ class ReservationsModel {
 
     const [{ count }] = await query.count("* as count");
     return Number(count);
+  };
+
+  getCurrentReservation = async (guestId?: string, roomId?: string) => {
+    const query = db("reservations")
+      .join(
+        "reservations_rooms",
+        "reservations.id",
+        "reservations_rooms.reservation_id"
+      )
+      .select("reservations.*")
+      .where("reservations.check_in", "<=", new Date().toISOString())
+      .andWhere("reservations.check_out", ">=", new Date().toISOString());
+
+    if (guestId) {
+      query.andWhere("reservations.guest_id", guestId);
+    }
+
+    if (roomId) {
+      query.andWhere("reservations_rooms.room_id", roomId);
+    }
+
+    return await query.first(); // Fetch the first matching reservation
   };
 }
 

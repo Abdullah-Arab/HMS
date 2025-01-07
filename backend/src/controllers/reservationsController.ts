@@ -27,6 +27,7 @@ class ReservationsController {
       handleError(res, "Failed to retrieve reservationss", error);
     }
   });
+
   createReservations = asyncHandler(async (req: Request, res: Response) => {
     try {
       const reservations = await reservationsService.addReservations(req.body);
@@ -154,10 +155,9 @@ class ReservationsController {
   getPastReservations = asyncHandler(async (req: Request, res: Response) => {
     const { page = 1, limit = 10, guestId, roomId } = req.query;
 
-
     // Ensure at least one of guestId or roomId is provided
     if (!guestId && !roomId) {
-       res
+      res
         .status(400)
         .json(
           formatResponse(
@@ -165,7 +165,7 @@ class ReservationsController {
             "At least one of 'guestId' or 'roomId' must be provided."
           )
         );
-        return;
+      return;
     }
 
     // Fetch past reservations
@@ -184,6 +184,46 @@ class ReservationsController {
           "Past reservations retrieved successfully",
           result.data,
           result.pagination
+        )
+      );
+  });
+
+  getCurrentReservation = asyncHandler(async (req: Request, res: Response) => {
+    const { guestId, roomId } = req.query;
+
+    // Ensure at least one of guestId or roomId is provided
+    if (!guestId && !roomId) {
+       res
+        .status(400)
+        .json(
+          formatResponse(
+            "error",
+            "At least one of 'guestId' or 'roomId' must be provided."
+          )
+        );
+        return;
+    }
+
+    // Fetch current reservation
+    const currentReservation = await reservationsService.getCurrentReservation(
+      guestId as string | undefined,
+      roomId as string | undefined
+    );
+
+    if (!currentReservation) {
+       res
+        .status(404)
+        .json(formatResponse("error", "No current reservation found."));
+        return;
+    }
+
+    res
+      .status(200)
+      .json(
+        formatResponse(
+          "success",
+          "Current reservation retrieved successfully",
+          currentReservation
         )
       );
   });
