@@ -29,7 +29,7 @@ class ReservationsService {
   };
 
   getReservationsById = async (id: string): Promise<Reservation | null> => {
-    return await reservationsModel.getReservationsByIdFromDB(id);
+    return await reservationsModel.getReservationById(id);
   };
 
   updateReservations = async (
@@ -168,7 +168,7 @@ class ReservationsService {
 
   async cancelReservation(reservationId: string): Promise<void> {
     // Step 1: Check if the reservation exists
-    const reservation = await reservationsModel.getReservationsByIdFromDB(
+    const reservation = await reservationsModel.getReservationById(
       reservationId
     );
     if (!reservation) {

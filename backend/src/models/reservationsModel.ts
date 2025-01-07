@@ -35,11 +35,27 @@ class ReservationsModel {
   };
 
   // Get a reservations by ID
-  getReservationsByIdFromDB = async (
-    id: string
-  ): Promise<Reservation | null> => {
-    return await db("reservations").where({ id }).first();
-  };
+  async getReservationById(reservationId: string): Promise<any> {
+    // Fetch reservation details
+    const reservation = await db("reservations")
+      .where({ id: reservationId })
+      .first();
+
+    if (!reservation) {
+      return null; // Return null if no reservation is found
+    }
+
+    // Fetch associated room details
+    const rooms = await db("reservations_rooms")
+      .join("rooms", "reservations_rooms.room_id", "rooms.id")
+      .where("reservations_rooms.reservation_id", reservationId)
+      .select("rooms.id", "rooms.name", "rooms.room_number", "rooms.capacity");
+
+    return {
+      ...reservation,
+      rooms, // Include room details
+    };
+  }
 
   // Update an existing reservations
   updateReservationsInDB = async (
