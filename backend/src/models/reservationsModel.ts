@@ -315,6 +315,16 @@ class ReservationsModel {
       return newReservation;
     });
   };
+
+  async cancelReservation(reservationId: string): Promise<boolean> {
+    const result = await db("reservations")
+      // Ensure it's not already canceled,
+      // .where({ id: reservationId, status: "confirmed" })
+      .where({ id: reservationId })
+      .update({ status: "cancelled" });
+
+    return result > 0; // Returns true if the reservation was successfully canceled
+  }
 }
 
 export default new ReservationsModel();

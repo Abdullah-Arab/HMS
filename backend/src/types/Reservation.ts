@@ -7,6 +7,7 @@ const Reservation = Type.Object({
   room_ids: Type.Array(Type.String()),
   checkin_date: Type.String(),
   checkout_date: Type.String(),
+  status: Type.String(),
   createdAt: Type.String(),
   updatedAt: Type.String(),
 });

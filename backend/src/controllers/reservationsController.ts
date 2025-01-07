@@ -264,6 +264,26 @@ class ReservationsController {
         )
       );
   });
+
+  cancelReservation = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    if (!id) {
+      res
+        .status(400)
+        .json(formatResponse("error", "Reservation ID is required."));
+      return;
+    }
+
+    try {
+      await reservationsService.cancelReservation(id);
+      res
+        .status(200)
+        .json(formatResponse("success", "Reservation canceled successfully."));
+    } catch (error: any) {
+      res.status(400).json(formatResponse("error", error.message));
+    }
+  });
 }
 
 export default new ReservationsController();

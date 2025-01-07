@@ -7,7 +7,7 @@ import { Reservation } from "../types/Reservation";
 // --todo: when creating a reservation, check if room is available--
 // --todo: when creating a reservation, validate check-in and check-out dates--
 // --todo: when creating a reservation, handle multiple rooms ( in reservation model as well )--
-// todo: handle race conditions
+// --todo: handle race conditions--
 // todo: cancel reservation
 class ReservationsService {
   getAllReservationss = async (page: number = 1, limit: number = 10) => {
@@ -164,6 +164,30 @@ class ReservationsService {
       check_in: checkIn,
       check_out: checkOut,
     });
+  }
+
+  async cancelReservation(reservationId: string): Promise<void> {
+    // Step 1: Check if the reservation exists
+    const reservation = await reservationsModel.getReservationsByIdFromDB(
+      reservationId
+    );
+    if (!reservation) {
+      throw new Error(`Reservation with ID ${reservationId} does not exist.`);
+    }
+
+    // Step 2: Validate business rules (optional)
+    const currentDate = new Date();
+    if (new Date(reservation.checkin_date) <= currentDate) {
+      throw new Error("Cannot cancel a reservation that has already started.");
+    }
+
+    // Step 3: Cancel the reservation
+    const canceled = await reservationsModel.cancelReservation(reservationId);
+    if (!canceled) {
+      throw new Error(
+        "Failed to cancel the reservation. It may have already been canceled."
+      );
+    }
   }
 }
 

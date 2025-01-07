@@ -56,7 +56,7 @@ router.put(
 router.delete(
   "/:id",
   validate(ReservationsIdSchema, "params"),
-  reservationsController.deleteReservations
+  reservationsController.cancelReservation
 ); // DELETE /reservationss/:id : requires input
 
 // schema for input validation using typebox
