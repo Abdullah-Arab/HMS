@@ -21,9 +21,12 @@
   },
   "dependencies": {
     "@sinclair/typebox": "^0.34.13",
+    "@types/ajv": "^0.0.5",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^6.1.1",
     "@types/faker": "^6.6.8",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

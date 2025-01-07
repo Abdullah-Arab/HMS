@@ -1,7 +1,6 @@
 import reservationsModel from "../models/reservationsModel";
 import { Reservation } from "../types/Reservation";
 
-
 // --todo: retrieve upcoming/past reservations for specific guest/room sorted by most recent--
 // --todo: total amount of upcoming reservations for specific guest/room--
 // --todo: current reservation for specific guest/room--
@@ -152,6 +151,11 @@ class ReservationsService {
     checkOut: string;
   }) {
     const { guestId, roomIds, checkIn, checkOut } = data;
+
+    // Validate date range
+    if (new Date(checkIn) >= new Date(checkOut)) {
+      throw new Error("Check-in date must be earlier than check-out date.");
+    }
 
     // Delegate the reservation creation to the model
     return await reservationsModel.createReservation({

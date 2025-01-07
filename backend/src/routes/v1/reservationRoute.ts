@@ -63,8 +63,8 @@ router.delete(
 const CreateReservationSchema = Type.Object({
   guestId: Type.String(),
   roomIds: Type.Array(Type.String({ minLength: 1 })), // At least one room
-  checkIn: Type.String({ format: "date-time" }), // Must be a valid datetime
-  checkOut: Type.String({ format: "date-time" }), // Must be a valid datetime
+  checkIn: Type.String({ format: "date-time" }), // Must be a valid ISO 8601 datetime
+  checkOut: Type.String({ format: "date-time" }), // Must be a valid ISO 8601 datetime
 });
 router.post(
   "/",
