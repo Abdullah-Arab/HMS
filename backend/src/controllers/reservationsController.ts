@@ -3,6 +3,8 @@ import reservationsService from "../services/reservationsService";
 import asyncHandler from "express-async-handler";
 import { formatResponse } from "../utils/fromatResponse";
 import { handleError } from "../utils/errorHandler";
+import guestService from "../services/guestService";
+import roomService from "../services/roomService";
 
 class ReservationsController {
   getReservationss = asyncHandler(async (req: Request, res: Response) => {
@@ -31,25 +33,53 @@ class ReservationsController {
   createReservation = asyncHandler(async (req: Request, res: Response) => {
     const { guestId, roomIds, checkIn, checkOut } = req.body;
 
-   try {
-     const reservation = await reservationsService.createReservation({
-       guestId,
-       roomIds,
-       checkIn,
-       checkOut,
-     });
-     res
-       .status(201)
-       .json(
-         formatResponse(
-           "success",
-           "Reservation created successfully",
-           reservation
-         )
-       );
-   } catch (error: any) {
-     res.status(400).json(formatResponse("error", error.message));
-   }
+    // Check if guest exists
+    const guestExists = await guestService.getGuestById(guestId);
+    if (!guestExists) {
+      res
+        .status(404)
+        .json(
+          formatResponse("error", `Guest with ID ${guestId} does not exist.`)
+        );
+      return;
+    }
+
+    // Check if all rooms exist
+    const invalidRooms = [];
+    for (const roomId of roomIds) {
+      const roomExists = await roomService.getRoomById(roomId);
+      if (!roomExists) invalidRooms.push(roomId);
+    }
+    if (invalidRooms.length > 0) {
+      res
+        .status(404)
+        .json(
+          formatResponse(
+            "error",
+            `Rooms with IDs ${invalidRooms.join(", ")} do not exist.`
+          )
+        );
+      return;
+    }
+    try {
+      const reservation = await reservationsService.createReservation({
+        guestId,
+        roomIds,
+        checkIn,
+        checkOut,
+      });
+      res
+        .status(201)
+        .json(
+          formatResponse(
+            "success",
+            "Reservation created successfully",
+            reservation
+          )
+        );
+    } catch (error: any) {
+      res.status(400).json(formatResponse("error", error.message));
+    }
   });
 
   getReservationsById = asyncHandler(async (req: Request, res: Response) => {
