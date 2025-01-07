@@ -82,6 +82,37 @@ class ReservationsService {
       },
     };
   };
+
+  getPastReservations = async (
+    page: number = 1,
+    limit: number = 10,
+    guestId?: string,
+    roomId?: string
+  ) => {
+    const offset = (page - 1) * limit;
+
+    const reservations = await reservationsModel.getPastReservations(
+      guestId,
+      roomId,
+      offset,
+      limit
+    );
+
+    const total = await reservationsModel.countPastReservations(
+      guestId,
+      roomId
+    );
+
+    return {
+      data: reservations,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  };
 }
 
 export default new ReservationsService();

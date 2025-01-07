@@ -150,6 +150,43 @@ class ReservationsController {
         );
     }
   );
+
+  getPastReservations = asyncHandler(async (req: Request, res: Response) => {
+    const { page = 1, limit = 10, guestId, roomId } = req.query;
+
+
+    // Ensure at least one of guestId or roomId is provided
+    if (!guestId && !roomId) {
+       res
+        .status(400)
+        .json(
+          formatResponse(
+            "error",
+            "At least one of 'guestId' or 'roomId' must be provided."
+          )
+        );
+        return;
+    }
+
+    // Fetch past reservations
+    const result = await reservationsService.getPastReservations(
+      parseInt(page as string, 10),
+      parseInt(limit as string, 10),
+      guestId as string | undefined,
+      roomId as string | undefined
+    );
+
+    res
+      .status(200)
+      .json(
+        formatResponse(
+          "success",
+          "Past reservations retrieved successfully",
+          result.data,
+          result.pagination
+        )
+      );
+  });
 }
 
 export default new ReservationsController();

@@ -99,6 +99,59 @@ class ReservationsModel {
     const [{ count }] = await query.count("* as count");
     return Number(count);
   };
+
+  getPastReservations = async (
+    guestId?: string,
+    roomId?: string,
+    offset: number = 0,
+    limit: number = 10
+  ) => {
+    const query = db("reservations")
+      .join(
+        "reservations_rooms",
+        "reservations.id",
+        "reservations_rooms.reservation_id"
+      ) // Join with the many-to-many table
+      .select("reservations.*") // Select fields from reservations
+      .where("reservations.check_out", "<", new Date().toISOString())
+      .orderBy("reservations.check_out", "desc") // Sort by the most recent past checkout
+      .offset(offset)
+      .limit(limit);
+
+    if (guestId) {
+      query.andWhere("reservations.guest_id", guestId);
+    }
+
+    if (roomId) {
+      query.andWhere("reservations_rooms.room_id", roomId);
+    }
+
+    return await query;
+  };
+
+  countPastReservations = async (
+    guestId?: string,
+    roomId?: string
+  ): Promise<number> => {
+    const query = db("reservations")
+      .join(
+        "reservations_rooms",
+        "reservations.id",
+        "reservations_rooms.reservation_id"
+      )
+      .where("reservations.check_out", "<", new Date().toISOString()); // Past reservations
+
+    if (guestId) {
+      query.andWhere("reservations.guest_id", guestId);
+    }
+
+    if (roomId) {
+      query.andWhere("reservations_rooms.room_id", roomId);
+    }
+
+    const [{ count }] = await query.count("* as count");
+    return Number(count);
+  };
 }
 
 export default new ReservationsModel();

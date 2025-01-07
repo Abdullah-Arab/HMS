@@ -15,7 +15,7 @@ router.get(
   reservationsController.getReservationss
 ); // GET /reservationss : no input required
 
-const GetUpcomingReservationsQuerySchema = Type.Object({
+const GetUpcomingPastReservationsQuerySchema = Type.Object({
   page: Type.Optional(Type.Integer({ minimum: 1 })), // Default: 1
   limit: Type.Optional(Type.Integer({ minimum: 1 })), // Default: 10
   guestId: Type.Optional(Type.String()), // Optional guest ID
@@ -23,10 +23,16 @@ const GetUpcomingReservationsQuerySchema = Type.Object({
 });
 router.get(
   "/upcoming",
-  validate(GetUpcomingReservationsQuerySchema, "query"),
+  validate(GetUpcomingPastReservationsQuerySchema, "query"),
   reservationsController.getUpcomingReservations
 ); // GET /reservations/upcoming
 
+// Route to get past reservations
+router.get(
+  "/past",
+  validate(GetUpcomingPastReservationsQuerySchema, "query"),
+  reservationsController.getPastReservations
+);
 // schema for input validation using typebox
 const ReservationsIdSchema = Type.Object({
   id: Type.String(),
