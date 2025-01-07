@@ -350,6 +350,7 @@ class ReservationsModel {
       }
 
       // Step 2: Remove room associations for the canceled reservation
+      // TODO: shouldn't use delete because we want to keep the records
       await trx("reservations_rooms")
         .where({ reservation_id: reservationId })
         .delete();
