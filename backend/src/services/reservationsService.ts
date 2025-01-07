@@ -13,7 +13,10 @@ import { Reservation } from "../types/Reservation";
 class ReservationsService {
   getAllReservationss = async (page: number = 1, limit: number = 10) => {
     const offset = (page - 1) * limit;
-    const reservationss = await reservationsModel.getReservationssFromDB(offset, limit);
+    const reservationss = await reservationsModel.getReservationssFromDB(
+      offset,
+      limit
+    );
     const total = await reservationsModel.getReservationssCount(); // Get total count of reservationss
     return {
       data: reservationss,
@@ -38,13 +41,46 @@ class ReservationsService {
 
   updateReservations = async (
     id: string,
-    reservationsData: Partial<Omit<Reservation, "id" | "created_at" | "updated_at">>
+    reservationsData: Partial<
+      Omit<Reservation, "id" | "created_at" | "updated_at">
+    >
   ): Promise<Reservation | null> => {
     return await reservationsModel.updateReservationsInDB(id, reservationsData);
   };
 
   deleteReservations = async (id: string): Promise<void> => {
     await reservationsModel.deleteReservationsFromDB(id);
+  };
+
+  getUpcomingReservations = async (
+    page: number = 1,
+    limit: number = 10,
+    guestId?: string,
+    roomId?: string
+  ) => {
+    const offset = (page - 1) * limit;
+
+    const reservations = await reservationsModel.getUpcomingReservations(
+      guestId,
+      roomId,
+      offset,
+      limit
+    );
+
+    const total = await reservationsModel.countUpcomingReservations(
+      guestId,
+      roomId
+    );
+
+    return {
+      data: reservations,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   };
 }
 

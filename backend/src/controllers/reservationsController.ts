@@ -10,7 +10,8 @@ class ReservationsController {
       const page = parseInt(req.query.page as string, 10) || 1;
       const limit = parseInt(req.query.limit as string, 10) || 10;
 
-      const { data, pagination } = await reservationsService.getAllReservationss(page, limit);
+      const { data, pagination } =
+        await reservationsService.getAllReservationss(page, limit);
 
       res
         .status(200)
@@ -31,7 +32,13 @@ class ReservationsController {
       const reservations = await reservationsService.addReservations(req.body);
       res
         .status(201)
-        .json(formatResponse("success", "Reservations created successfully", reservations));
+        .json(
+          formatResponse(
+            "success",
+            "Reservations created successfully",
+            reservations
+          )
+        );
     } catch (error) {
       handleError(res, "Failed to create reservations", error);
     }
@@ -39,7 +46,9 @@ class ReservationsController {
 
   getReservationsById = asyncHandler(async (req: Request, res: Response) => {
     try {
-      const reservations = await reservationsService.getReservationsById(req.params.id);
+      const reservations = await reservationsService.getReservationsById(
+        req.params.id
+      );
 
       if (!reservations) {
         res.status(404).json(formatResponse("error", "Reservations not found"));
@@ -48,7 +57,13 @@ class ReservationsController {
 
       res
         .status(200)
-        .json(formatResponse("success", "Reservations retrieved successfully", reservations));
+        .json(
+          formatResponse(
+            "success",
+            "Reservations retrieved successfully",
+            reservations
+          )
+        );
     } catch (error) {
       handleError(res, "Failed to retrieve reservations", error);
     }
@@ -56,7 +71,10 @@ class ReservationsController {
 
   updateReservations = asyncHandler(async (req: Request, res: Response) => {
     try {
-      const reservations = await reservationsService.updateReservations(req.params.id, req.body);
+      const reservations = await reservationsService.updateReservations(
+        req.params.id,
+        req.body
+      );
 
       if (!reservations) {
         res.status(404).json(formatResponse("error", "Reservations not found"));
@@ -65,7 +83,13 @@ class ReservationsController {
 
       res
         .status(200)
-        .json(formatResponse("success", "Reservations updated successfully", reservations));
+        .json(
+          formatResponse(
+            "success",
+            "Reservations updated successfully",
+            reservations
+          )
+        );
     } catch (error) {
       handleError(res, "Failed to update reservations", error);
     }
@@ -73,7 +97,9 @@ class ReservationsController {
 
   deleteReservations = asyncHandler(async (req: Request, res: Response) => {
     try {
-      const reservations = await reservationsService.getReservationsById(req.params.id);
+      const reservations = await reservationsService.getReservationsById(
+        req.params.id
+      );
 
       if (!reservations) {
         res.status(404).json(formatResponse("error", "Reservations not found"));
@@ -87,6 +113,43 @@ class ReservationsController {
       handleError(res, "Failed to delete reservations", error);
     }
   });
+
+  getUpcomingReservations = asyncHandler(
+    async (req: Request, res: Response) => {
+      const { page = 1, limit = 10, guestId, roomId } = req.query;
+
+      // Ensure at least one of guestId or roomId is provided
+      if (!guestId && !roomId) {
+        res
+          .status(400)
+          .json(
+            formatResponse(
+              "error",
+              "At least one of 'guestId' or 'roomId' must be provided."
+            )
+          );
+        return;
+      }
+
+      const result = await reservationsService.getUpcomingReservations(
+        parseInt(page as string, 10),
+        parseInt(limit as string, 10),
+        guestId as string,
+        roomId as string
+      );
+
+      res
+        .status(200)
+        .json(
+          formatResponse(
+            "success",
+            "Upcoming reservations retrieved successfully",
+            result.data,
+            result.pagination
+          )
+        );
+    }
+  );
 }
 
 export default new ReservationsController();

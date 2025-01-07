@@ -9,7 +9,23 @@ const GetReservationssQuerySchema = Type.Object({
   page: Type.Optional(Type.Number({ minimum: 1 })),
   limit: Type.Optional(Type.Number({ minimum: 1 })),
 });
-router.get("/", validate(GetReservationssQuerySchema), reservationsController.getReservationss); // GET /reservationss : no input required
+router.get(
+  "/",
+  validate(GetReservationssQuerySchema),
+  reservationsController.getReservationss
+); // GET /reservationss : no input required
+
+const GetUpcomingReservationsQuerySchema = Type.Object({
+  page: Type.Optional(Type.Integer({ minimum: 1 })), // Default: 1
+  limit: Type.Optional(Type.Integer({ minimum: 1 })), // Default: 10
+  guestId: Type.Optional(Type.String()), // Optional guest ID
+  roomId: Type.Optional(Type.String()), // Optional room ID
+});
+router.get(
+  "/upcoming",
+  validate(GetUpcomingReservationsQuerySchema, "query"),
+  reservationsController.getUpcomingReservations
+); // GET /reservations/upcoming
 
 // schema for input validation using typebox
 const ReservationsIdSchema = Type.Object({
@@ -33,16 +49,15 @@ router.delete(
 
 // schema for input validation using typebox
 const AddReservationsSchema = Type.Object({
-  // guest id
-  // room ids
-  // checkin date
-  // checkout date
-
   guestId: Type.String(),
   roomIds: Type.Array(Type.String()),
   checkinDate: Type.Date(),
   checkoutDate: Type.Date(),
 });
-router.post("/", validate(AddReservationsSchema), reservationsController.createReservations); // POST /reservationss : requires input
+router.post(
+  "/",
+  validate(AddReservationsSchema),
+  reservationsController.createReservations
+); // POST /reservationss : requires input
 
 export default router;
