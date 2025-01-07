@@ -8,7 +8,7 @@ import { Reservation } from "../types/Reservation";
 // --todo: when creating a reservation, validate check-in and check-out dates--
 // --todo: when creating a reservation, handle multiple rooms ( in reservation model as well )--
 // --todo: handle race conditions--
-// todo: cancel reservation
+// --todo: cancel reservation--
 class ReservationsService {
   getAllReservationss = async (page: number = 1, limit: number = 10) => {
     const offset = (page - 1) * limit;
