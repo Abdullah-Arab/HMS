@@ -12,17 +12,17 @@ class ReservationsModel {
     return Number(count);
   };
 
-  // Create a new reservations
-  createReservation = async (reservationData: {
-    guest_id: string;
-    check_in: string;
-    check_out: string;
-  }): Promise<any> => {
-    const [newReservation] = await db("reservations")
-      .insert(reservationData)
-      .returning("*"); // Return all columns of the created reservation
-    return newReservation;
-  };
+  // Create a new reservations - OLD
+  // createReservation = async (reservationData: {
+  //   guest_id: string;
+  //   check_in: string;
+  //   check_out: string;
+  // }): Promise<any> => {
+  //   const [newReservation] = await db("reservations")
+  //     .insert(reservationData)
+  //     .returning("*"); // Return all columns of the created reservation
+  //   return newReservation;
+  // };
 
   linkRoomToReservation = async (
     reservationId: string,
@@ -216,6 +216,104 @@ class ReservationsModel {
       );
 
     return conflicts.length === 0; // Return true if no conflicts
+  };
+
+  // Check room availability within a transaction
+  checkRoomAvailabilityWithLock = async (
+    trx: any,
+    roomId: string,
+    checkIn: string,
+    checkOut: string
+  ): Promise<boolean> => {
+    const conflicts = await trx("reservations")
+      .join(
+        "reservations_rooms",
+        "reservations.id",
+        "reservations_rooms.reservation_id"
+      )
+      .where("reservations_rooms.room_id", roomId)
+      .andWhere((query: any) =>
+        query
+          .whereBetween("reservations.check_in", [checkIn, checkOut])
+          .orWhereBetween("reservations.check_out", [checkIn, checkOut])
+          .orWhereRaw(
+            "? BETWEEN reservations.check_in AND reservations.check_out",
+            [checkIn]
+          )
+          .orWhereRaw(
+            "? BETWEEN reservations.check_in AND reservations.check_out",
+            [checkOut]
+          )
+      )
+      .forUpdate(); // Apply row-level lock on conflicting reservations
+
+    return conflicts.length === 0; // Return true if no conflicts
+  };
+
+  // Create reservation within a transaction
+  createReservation = async (reservationData: {
+    guest_id: string;
+    check_in: string;
+    check_out: string;
+    roomIds: string[];
+  }): Promise<any> => {
+    return await db.transaction(async (trx) => {
+      // Step 1: Check room availability for each room
+      for (const roomId of reservationData.roomIds) {
+        const conflicts = await trx("reservations")
+          .join(
+            "reservations_rooms",
+            "reservations.id",
+            "reservations_rooms.reservation_id"
+          )
+          .where("reservations_rooms.room_id", roomId)
+          .andWhere((query) =>
+            query
+              .whereBetween("reservations.check_in", [
+                reservationData.check_in,
+                reservationData.check_out,
+              ])
+              .orWhereBetween("reservations.check_out", [
+                reservationData.check_in,
+                reservationData.check_out,
+              ])
+              .orWhereRaw(
+                "? BETWEEN reservations.check_in AND reservations.check_out",
+                [reservationData.check_in]
+              )
+              .orWhereRaw(
+                "? BETWEEN reservations.check_in AND reservations.check_out",
+                [reservationData.check_out]
+              )
+          )
+          .forUpdate();
+
+        if (conflicts.length > 0) {
+          throw new Error(
+            `Room ${roomId} is not available for the selected dates.`
+          );
+        }
+      }
+
+      // Step 2: Create reservation
+      const [newReservation] = await trx("reservations")
+        .insert({
+          guest_id: reservationData.guest_id,
+          check_in: reservationData.check_in,
+          check_out: reservationData.check_out,
+        })
+        .returning("*");
+
+      // Step 3: Link rooms to the reservation
+      for (const roomId of reservationData.roomIds) {
+        await trx("reservations_rooms").insert({
+          reservation_id: newReservation.id,
+          room_id: roomId,
+        });
+      }
+
+      return newReservation;
+    });
   };
 }
 

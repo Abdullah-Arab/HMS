@@ -29,8 +29,6 @@ class ReservationsService {
     };
   };
 
-
-
   getReservationsById = async (id: string): Promise<Reservation | null> => {
     return await reservationsModel.getReservationsByIdFromDB(id);
   };
@@ -146,32 +144,22 @@ class ReservationsService {
 
     return available;
   };
+
   async createReservation(data: {
     guestId: string;
     roomIds: string[];
-    check_in: string;
-    check_out: string;
+    checkIn: string;
+    checkOut: string;
   }) {
-    const { guestId, roomIds, check_in, check_out } = data;
+    const { guestId, roomIds, checkIn, checkOut } = data;
 
-    // Check availability for all rooms
-    for (const roomId of roomIds) {
-      await this.isRoomAvailable(roomId, check_in, check_out);
-    }
-
-    // If all rooms are available, create reservation
-    const newReservation = await reservationsModel.createReservation({
+    // Delegate the reservation creation to the model
+    return await reservationsModel.createReservation({
       guest_id: guestId,
-      check_in: check_in,
-      check_out: check_out,
+      roomIds,
+      check_in: checkIn,
+      check_out: checkOut,
     });
-
-    // Link rooms to the reservation
-    for (const roomId of roomIds) {
-      await reservationsModel.linkRoomToReservation(newReservation.id, roomId);
-    }
-
-    return newReservation;
   }
 }
 

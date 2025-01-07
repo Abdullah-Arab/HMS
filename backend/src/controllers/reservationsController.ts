@@ -29,27 +29,27 @@ class ReservationsController {
   });
 
   createReservation = asyncHandler(async (req: Request, res: Response) => {
-    const { guestId, roomIds, check_in, check_out } = req.body;
+    const { guestId, roomIds, checkIn, checkOut } = req.body;
 
-    try {
-      const reservation = await reservationsService.createReservation({
-        guestId,
-        roomIds,
-        check_in,
-        check_out,
-      });
-      res
-        .status(201)
-        .json(
-          formatResponse(
-            "success",
-            "Reservation created successfully",
-            reservation
-          )
-        );
-    } catch (error: any) {
-      res.status(400).json(formatResponse("error", error.message));
-    }
+   try {
+     const reservation = await reservationsService.createReservation({
+       guestId,
+       roomIds,
+       checkIn,
+       checkOut,
+     });
+     res
+       .status(201)
+       .json(
+         formatResponse(
+           "success",
+           "Reservation created successfully",
+           reservation
+         )
+       );
+   } catch (error: any) {
+     res.status(400).json(formatResponse("error", error.message));
+   }
   });
 
   getReservationsById = asyncHandler(async (req: Request, res: Response) => {
