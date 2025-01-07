@@ -60,16 +60,16 @@ router.delete(
 ); // DELETE /reservationss/:id : requires input
 
 // schema for input validation using typebox
-const AddReservationsSchema = Type.Object({
+const CreateReservationSchema = Type.Object({
   guestId: Type.String(),
-  roomIds: Type.Array(Type.String()),
-  checkinDate: Type.Date(),
-  checkoutDate: Type.Date(),
+  roomIds: Type.Array(Type.String({ minLength: 1 })), // At least one room
+  checkIn: Type.String({ format: "date-time" }), // Must be a valid datetime
+  checkOut: Type.String({ format: "date-time" }), // Must be a valid datetime
 });
 router.post(
   "/",
-  validate(AddReservationsSchema),
-  reservationsController.createReservations
+  validate(CreateReservationSchema),
+  reservationsController.createReservation
 ); // POST /reservationss : requires input
 
 export default router;

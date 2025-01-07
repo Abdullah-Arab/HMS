@@ -13,13 +13,25 @@ class ReservationsModel {
   };
 
   // Create a new reservations
-  createReservationsInDB = async (
-    reservationsData: Omit<Reservation, "id" | "created_at" | "updated_at">
-  ): Promise<Reservation> => {
-    const [newReservations] = await db("reservations")
-      .insert(reservationsData)
-      .returning("*");
-    return newReservations;
+  createReservation = async (reservationData: {
+    guest_id: string;
+    check_in: string;
+    check_out: string;
+  }): Promise<any> => {
+    const [newReservation] = await db("reservations")
+      .insert(reservationData)
+      .returning("*"); // Return all columns of the created reservation
+    return newReservation;
+  };
+
+  linkRoomToReservation = async (
+    reservationId: string,
+    roomId: string
+  ): Promise<void> => {
+    await db("reservations_rooms").insert({
+      reservation_id: reservationId,
+      room_id: roomId,
+    });
   };
 
   // Get a reservations by ID
@@ -174,6 +186,36 @@ class ReservationsModel {
     }
 
     return await query.first(); // Fetch the first matching reservation
+  };
+
+  isRoomAvailable = async (
+    roomId: string,
+    checkIn: string,
+    checkOut: string
+  ): Promise<boolean> => {
+    const conflicts = await db("reservations")
+      .join(
+        "reservations_rooms",
+        "reservations.id",
+        "reservations_rooms.reservation_id"
+      )
+      .where("reservations_rooms.room_id", roomId)
+      .andWhere(
+        (query) =>
+          query
+            .whereBetween("reservations.check_in", [checkIn, checkOut]) // Overlaps start
+            .orWhereBetween("reservations.check_out", [checkIn, checkOut]) // Overlaps end
+            .orWhereRaw(
+              "? BETWEEN reservations.check_in AND reservations.check_out",
+              [checkIn]
+            ) // Enveloping
+            .orWhereRaw(
+              "? BETWEEN reservations.check_in AND reservations.check_out",
+              [checkOut]
+            ) // Enveloping
+      );
+
+    return conflicts.length === 0; // Return true if no conflicts
   };
 }
 

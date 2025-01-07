@@ -28,20 +28,27 @@ class ReservationsController {
     }
   });
 
-  createReservations = asyncHandler(async (req: Request, res: Response) => {
+  createReservation = asyncHandler(async (req: Request, res: Response) => {
+    const { guestId, roomIds, check_in, check_out } = req.body;
+
     try {
-      const reservations = await reservationsService.addReservations(req.body);
+      const reservation = await reservationsService.createReservation({
+        guestId,
+        roomIds,
+        check_in,
+        check_out,
+      });
       res
         .status(201)
         .json(
           formatResponse(
             "success",
-            "Reservations created successfully",
-            reservations
+            "Reservation created successfully",
+            reservation
           )
         );
-    } catch (error) {
-      handleError(res, "Failed to create reservations", error);
+    } catch (error: any) {
+      res.status(400).json(formatResponse("error", error.message));
     }
   });
 
@@ -193,7 +200,7 @@ class ReservationsController {
 
     // Ensure at least one of guestId or roomId is provided
     if (!guestId && !roomId) {
-       res
+      res
         .status(400)
         .json(
           formatResponse(
@@ -201,7 +208,7 @@ class ReservationsController {
             "At least one of 'guestId' or 'roomId' must be provided."
           )
         );
-        return;
+      return;
     }
 
     // Fetch current reservation
@@ -211,10 +218,10 @@ class ReservationsController {
     );
 
     if (!currentReservation) {
-       res
+      res
         .status(404)
         .json(formatResponse("error", "No current reservation found."));
-        return;
+      return;
     }
 
     res
