@@ -6,7 +6,7 @@
       <ul class="p-4 space-y-4">
         @for (item of routes(); track $index) {
         <a
-          routerLink="item.link"
+          [routerLink]="item.link"
           routerLinkActive="bg-gray-200"
           class="block p-2 rounded hover:bg-gray-200"
           ><li class="cursor-pointer">

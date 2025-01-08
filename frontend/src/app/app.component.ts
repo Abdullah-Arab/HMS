@@ -6,7 +6,7 @@ import { TuiIcon } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TuiRoot, TuiAccordion, TuiIcon],
+  imports: [RouterOutlet, TuiRoot, TuiAccordion, TuiIcon, RouterLink],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
