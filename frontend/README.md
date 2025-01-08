@@ -57,3 +57,39 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── dashboard/
+│   │   │   ├── dashboard.component.ts
+│   │   │   ├── dashboard.component.html
+│   │   │   └── dashboard.component.css
+│   │   ├── rooms/
+│   │   │   ├── rooms.component.ts
+│   │   │   ├── rooms.component.html
+│   │   │   └── rooms.component.css
+│   │   ├── guests/
+│   │   │   ├── guests.component.ts
+│   │   │   ├── guests.component.html
+│   │   │   └── guests.component.css
+│   │   └── reservations/
+│   │       ├── reservations.component.ts
+│   │       ├── reservations.component.html
+│   │       └── reservations.component.css
+│   ├── services/
+│   │   ├── rooms.service.ts
+│   │   ├── guests.service.ts
+│   │   └── reservations.service.ts
+│   ├── app-routing.module.ts
+│   ├── app.component.ts
+│   ├── app.component.html
+│   └── app.module.ts
+├── assets/
+├── environments/
+└── main.ts
+
+```

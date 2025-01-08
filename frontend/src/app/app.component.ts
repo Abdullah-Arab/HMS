@@ -8,7 +8,6 @@ import { TuiIcon } from '@taiga-ui/core';
   selector: 'app-root',
   imports: [RouterOutlet, TuiRoot, TuiAccordion, TuiIcon],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'World';
