@@ -1,12 +1,33 @@
 import { Routes } from '@angular/router';
-import { RoomsComponent } from './components/rooms/rooms.component';
-import { GuestsComponent } from './components/guests/guests.component';
-import { ReservationsComponent } from './components/reservations/reservations.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  { path: '', component: DashboardComponent },
-  { path: 'rooms', component: RoomsComponent },
-  { path: 'guests', component: GuestsComponent },
-  { path: 'reservations', component: ReservationsComponent },
+  {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent
+      ),
+  },
+  {
+    path: 'rooms',
+    loadComponent: () =>
+      import('./components/rooms/rooms.component').then(
+        (m) => m.RoomsComponent
+      ),
+  },
+  {
+    path: 'guests',
+    loadComponent: () =>
+      import('./components/guests/guests.component').then(
+        (m) => m.GuestsComponent
+      ),
+  },
+  {
+    path: 'reservations',
+    loadComponent: () =>
+      import('./components/reservations/reservations.component').then(
+        (m) => m.ReservationsComponent
+      ),
+  },
 ];

@@ -4,42 +4,19 @@
     <nav class="w-64 bg-gray-100 flex-shrink-0">
       <div class="p-4 text-lg font-bold">Hotel Management System</div>
       <ul class="p-4 space-y-4">
+        @for (item of routes(); track $index) {
         <li>
           <a
-            routerLink="/"
-            class="flex items-center space-x-2 p-2 rounded hover:bg-gray-300 transition"
+            routerLink="'item.link'"
+            routerLinkActive="bg-gray-200"
+            class="block p-2 rounded hover:bg-gray-200"
           >
             <tui-icon icon="@tui.layout-dashboard"></tui-icon>
-            <span>Dashboard</span>
+
+            {{ item.title }}
           </a>
         </li>
-        <li>
-          <a
-            routerLink="/rooms"
-            class="flex items-center space-x-2 p-2 rounded hover:bg-gray-300 transition"
-          >
-            <tui-icon icon="@tui.bed-single"></tui-icon>
-            <span>Rooms</span>
-          </a>
-        </li>
-        <li>
-          <a
-            routerLink="/guests"
-            class="flex items-center space-x-2 p-2 rounded hover:bg-gray-300 transition"
-          >
-            <tui-icon icon="@tui.users"></tui-icon>
-            <span>Guests</span>
-          </a>
-        </li>
-        <li>
-          <a
-            routerLink="/reservations"
-            class="flex items-center space-x-2 p-2 rounded hover:bg-gray-300 transition"
-          >
-            <tui-icon icon="@tui.calendar-fold"></tui-icon>
-            <span>Reservations</span>
-          </a>
-        </li>
+        }
       </ul>
     </nav>
 

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
 import { TuiRoot } from '@taiga-ui/core';
 import { TuiAccordion } from '@taiga-ui/kit';
 import { TuiIcon } from '@taiga-ui/core';
+
 
 @Component({
   selector: 'app-root',
@@ -10,5 +11,27 @@ import { TuiIcon } from '@taiga-ui/core';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  title = 'World';
+  // routes object
+  routes = signal([
+    {
+      title: 'Dashboard',
+      icon: '@tui.layout-dashboard',
+      link: '/',
+    },
+    {
+      title: 'Rooms',
+      icon: '@tui.bed-single',
+      link: '/rooms',
+    },
+    {
+      title: 'Guests',
+      icon: '@tui.users',
+      link: '/guests',
+    },
+    {
+      title: 'Reservations',
+      icon: '@tui.calendar-fold',
+      link: '/reservations',
+    },
+  ]);
 }
