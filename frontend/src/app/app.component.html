@@ -5,16 +5,18 @@
       <div class="p-4 text-lg font-bold">Hotel Management System</div>
       <ul class="p-4 space-y-4">
         @for (item of routes(); track $index) {
-        <a
-          [routerLink]="item.link"
-          routerLinkActive="bg-gray-200"
-          class="block p-2 rounded hover:bg-gray-200"
-          ><li class="cursor-pointer">
+        <li class="cursor-pointer">
+          <a
+            [routerLink]="item.link"
+            routerLinkActive="font-bold bg-gray-200 text-blue-500"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block p-2 rounded hover:bg-gray-200"
+          >
             <tui-icon [icon]="'@tui.' + item.icon"></tui-icon>
 
             {{ item.title }}
-          </li>
-        </a>
+          </a>
+        </li>
         }
       </ul>
     </nav>
