@@ -4,6 +4,14 @@
   [actionTitle]="'Add Room'"
   [onTap]="onTap"
 />
+<div tuiCardMedium tuiAppearance="neutral" class="mb-4">
+  <div tuiHeader>
+    <h1 tuiTitle>
+      {{ roomsData()?.pagination?.total }}
+      <span tuiSubtitle>Rooms</span>
+    </h1>
+  </div>
+</div>
 
 @if (isLoading()) {
 <tui-loader [showLoader]="true"></tui-loader>
@@ -94,7 +102,6 @@
           [length]="roomsData()?.pagination?.totalPages!"
           [(index)]="currentPage"
           (indexChange)="onPageChange($event)"
-          
         ></tui-pagination>
       </td>
     </tr>

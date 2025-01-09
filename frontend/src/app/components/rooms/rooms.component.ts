@@ -2,7 +2,13 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 
 import { TitleComponent } from '../title/title.component';
 
-import { TuiButton, TuiDropdown, TuiLoader, TuiTitle } from '@taiga-ui/core';
+import {
+  TuiAppearance,
+  TuiButton,
+  TuiDropdown,
+  TuiLoader,
+  TuiTitle,
+} from '@taiga-ui/core';
 import {
   TuiStatus,
   TuiItemsWithMore,
@@ -11,12 +17,14 @@ import {
   TuiDataListWrapper,
   TuiButtonSelect,
 } from '@taiga-ui/kit';
-import { TuiCell } from '@taiga-ui/layout';
+
 import { TuiTable } from '@taiga-ui/addon-table';
 import { FormsModule } from '@angular/forms';
 import Room from '../../../types/room';
 import ApiResponse from '../../../types/api-response';
 import { RoomService } from '../../services/room.service';
+import { TuiCardMedium } from '@taiga-ui/layout';
+
 @Component({
   selector: 'app-rooms',
   standalone: true,
@@ -33,6 +41,8 @@ import { RoomService } from '../../services/room.service';
     TuiLoader,
     TuiDataListWrapper,
     TuiPagination,
+    TuiAppearance,
+    TuiCardMedium,
   ],
   templateUrl: './rooms.component.html',
 })
