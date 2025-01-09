@@ -1,0 +1,19 @@
+
+<!-- Tabs -->
+<tui-tabs [(activeItemIndex)]="activeItemIndex" class="mb-4">
+  @for (item of tabs(); track $index) {
+  <button
+    [iconStart]="'@tui.' + item.icon"
+    tuiTab
+    type="button"
+    (click)="onClick('Maps')"
+  >
+    {{ item.title }}
+  </button>
+  }
+</tui-tabs>
+<!-- Tab Content -->
+<!-- {{ activeItemIndex }} -->
+@if (activeItemIndex === 0) {
+<app-rooms-details></app-rooms-details>
+} @else { history }
