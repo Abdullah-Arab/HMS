@@ -1,8 +1,8 @@
 @if (isLoading()) {
-<p class="tui-text_h1">LOADING</p>
-}@else if (roomsData()?.status == 'error') {
-<p class="tui-text_h1">ERROR</p>
-<p class="tui-text_h2">{{ roomsData()?.message }}</p>
+<tui-loader [showLoader]="true"></tui-loader>
+} @else if (roomsData()?.status == 'error') {
+<p class="tui-text_h1">Opss!</p>
+<p class="tui-text_body-xl">{{ roomsData()?.message }}</p>
 
 } @else {
 

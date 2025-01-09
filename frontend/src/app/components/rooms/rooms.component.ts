@@ -1,25 +1,10 @@
 import Room from '../../../types/room';
 import ApiResponse from '../../../types/api-response';
 import { RoomService } from './../../services/room.service';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TuiTable } from '@taiga-ui/addon-table';
-import {
-  TuiAutoColorPipe,
-  TuiButton,
-  TuiDropdown,
-  TuiIcon,
-  TuiInitialsPipe,
-  TuiLink,
-  TuiTitle,
-} from '@taiga-ui/core';
+import { TuiButton, TuiDropdown, TuiLoader, TuiTitle } from '@taiga-ui/core';
 import {
   TuiAvatar,
   TuiBadge,
@@ -36,23 +21,15 @@ import { TuiCell } from '@taiga-ui/layout';
   standalone: true,
   imports: [
     FormsModule,
-    TuiAutoColorPipe,
-    TuiAvatar,
-    TuiBadge,
     TuiButton,
     TuiCell,
     TuiCheckbox,
-    TuiChip,
     TuiDropdown,
-    TuiIcon,
-    TuiInitialsPipe,
     TuiItemsWithMore,
-    TuiLink,
-    TuiProgressBar,
-    TuiRadioList,
     TuiStatus,
     TuiTable,
     TuiTitle,
+    TuiLoader,
   ],
   templateUrl: './rooms.component.html',
 })
