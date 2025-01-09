@@ -57,22 +57,32 @@ import { TuiCell } from '@taiga-ui/layout';
   templateUrl: './rooms.component.html',
 })
 export class RoomsComponent implements OnInit {
-  rooms = signal<Room[]>([]);
+  roomsData = signal<ApiResponse<Room> | undefined>(undefined);
+  isLoading = signal<boolean>(true);
+
   roomService: RoomService = inject(RoomService);
 
   constructor() {}
 
   ngOnInit() {
     this.roomService.getRooms().subscribe({
-      next: (rooms) => {
-        console.log('Rooms fetched', rooms);
-        this.rooms.set(rooms.data);
+      next: (res) => {
+        console.log('res fetched', res);
+
+        const response: ApiResponse<Room> = res;
+
+        if (response.status === 'error') {
+          console.error('Error fetching rooms', response.error);
+          return;
+        }
+        this.roomsData.set(response);
       },
       error: (error) => {
         console.error('Error fetching rooms', error);
       },
       complete: () => {
         console.log('Rooms fetch complete');
+        this.isLoading.set(false);
       },
     });
   }

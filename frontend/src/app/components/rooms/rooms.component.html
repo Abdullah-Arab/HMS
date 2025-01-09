@@ -1,3 +1,6 @@
+@if (isLoading()) {
+<p class="tui-text_h1">LOADING</p>
+} @else {
 <table tuiTable [size]="'m'" [style.width.rem]="58">
   <thead>
     <tr>
@@ -23,7 +26,7 @@
   </thead>
 
   <tbody tuiTbody>
-    @for (room of rooms(); track $index) {
+    @for (room of (roomsData()?.data || []); track $index) {
     <tr>
       <td tuiTd>
         <div [tuiCell]="'m'">
@@ -83,3 +86,5 @@
     }
   </tbody>
 </table>
+
+}
