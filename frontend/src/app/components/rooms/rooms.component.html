@@ -1,118 +1,21 @@
-@if (isLoading()) {
-<tui-loader [showLoader]="true"></tui-loader>
-} @else if (roomsData()?.status == 'error') {
-<p class="tui-text_h1">Opss!</p>
-<p class="tui-text_body-xl">{{ roomsData()?.message }}</p>
-
-} @else {
 <!-- Title -->
 <app-title [title]="'Rooms Mangament'" />
 
 <!-- Tabs -->
 <tui-tabs [(activeItemIndex)]="activeItemIndex" class="mb-4">
+  @for (item of tabs(); track $index) {
   <button
-    iconStart="@tui.book-text"
+    [iconStart]="'@tui.' + item.icon"
     tuiTab
     type="button"
     (click)="onClick('Maps')"
   >
-    Details
+    {{ item.title }}
   </button>
-
-  <button
-    iconStart="@tui.history"
-    tuiTab
-    type="button"
-    (click)="onClick('Settings')"
-  >
-    History
-  </button>
+  }
 </tui-tabs>
-
-<table tuiTable [size]="'m'" class="w-full">
-  <thead>
-    <tr>
-      <!-- <th tuiTh>
-        <div [tuiCell]="'m'">
-          <input
-            tuiCheckbox
-            type="checkbox"
-            [ngModel]="checked"
-            [size]="'m'"
-            (ngModelChange)="onCheck($event)"
-          />
-        </div>
-      </th> -->
-      <th tuiTh>ID</th>
-      <th tuiTh>Room Number</th>
-      <th tuiTh>Capacity</th>
-      <th tuiTh>Title</th>
-      <th tuiTh>Updated At</th>
-      <th tuiTh>Created At</th>
-      <th tuiTh>Actions</th>
-    </tr>
-  </thead>
-
-  <tbody tuiTbody>
-    @for (room of (roomsData()?.data || []); track $index) {
-    <tr>
-      <!-- <td tuiTd>
-        <div [tuiCell]="'m'">
-          <input tuiCheckbox type="checkbox" [size]="'m'" />
-        </div>
-      </td> -->
-
-      <td tuiTd>
-        <span tuiTitle>
-          {{ room.id }}
-        </span>
-      </td>
-      <td tuiTd>
-        <span tuiTitle>
-          {{ room.room_number }}
-        </span>
-      </td>
-      <td tuiTd>
-        <span tuiTitle> {{ room.capacity }} </span>
-      </td>
-      <td tuiTd>
-        <span tuiTitle> {{ room.name }} </span>
-      </td>
-      <td tuiTd>
-        <span tuiTitle>
-          {{ room.updated_at }}
-        </span>
-      </td>
-      <td tuiTd>
-        <span tuiTitle>
-          {{ room.created_at }}
-        </span>
-      </td>
-      <td tuiTd>
-        <span tuiStatus>
-          <button
-            appearance="action"
-            iconStart="@tui.pencil"
-            size="xs"
-            tuiIconButton
-            type="button"
-          >
-            Edit
-          </button>
-          <button
-            appearance="action"
-            iconStart="@tui.ellipsis"
-            size="xs"
-            tuiIconButton
-            type="button"
-          >
-            More
-          </button>
-        </span>
-      </td>
-    </tr>
-    }
-  </tbody>
-</table>
-
-}
+<!-- Tab Content -->
+<!-- {{ activeItemIndex }} -->
+@if (activeItemIndex === 0) {
+<app-rooms-details></app-rooms-details>
+} @else { history }
