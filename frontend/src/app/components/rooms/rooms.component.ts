@@ -4,15 +4,12 @@ import { TitleComponent } from '../title/title.component';
 
 import { TuiButton, TuiDropdown, TuiLoader, TuiTitle } from '@taiga-ui/core';
 import {
-  TuiAvatar,
-  TuiBadge,
-  TuiCheckbox,
-  TuiChip,
-  TuiProgressBar,
-  TuiRadioList,
   TuiStatus,
   TuiItemsWithMore,
   TuiTabs,
+  TuiPagination,
+  TuiDataListWrapper,
+  TuiButtonSelect,
 } from '@taiga-ui/kit';
 import { TuiCell } from '@taiga-ui/layout';
 import { TuiTable } from '@taiga-ui/addon-table';
@@ -34,19 +31,28 @@ import { RoomService } from '../../services/room.service';
     TuiItemsWithMore,
     TuiTable,
     TuiLoader,
+    TuiDataListWrapper,
+    TuiPagination,
   ],
   templateUrl: './rooms.component.html',
 })
 export class RoomsComponent implements OnInit {
   roomsData = signal<ApiResponse<Room> | undefined>(undefined);
   isLoading = signal<boolean>(true);
+
   roomService: RoomService = inject(RoomService);
-  onTap () {
+  currentPage = 1;
+  pageSize = 10;
+  onTap() {
     console.log('Tapped');
-  };
+  }
 
   ngOnInit() {
-    this.roomService.getRooms().subscribe({
+    this.fetchRooms();
+  }
+
+  fetchRooms(): void {
+    this.roomService.getRooms(this.currentPage, this.pageSize).subscribe({
       next: (res) => {
         console.log('res fetched', res);
 
@@ -68,5 +74,21 @@ export class RoomsComponent implements OnInit {
         this.isLoading.set(false);
       },
     });
+  }
+
+  onPageChange(page: number): void {
+    //todo: fix this, page++
+    console.log('Page change', page);
+
+    this.currentPage = page;
+    this.fetchRooms();
+  }
+
+  editRoom(room: Room): void {
+    // Implement edit room logic
+  }
+
+  moreActions(room: Room): void {
+    // Implement more actions logic
   }
 }

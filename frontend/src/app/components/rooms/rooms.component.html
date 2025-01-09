@@ -68,6 +68,7 @@
             size="xs"
             tuiIconButton
             type="button"
+            (click)="editRoom(room)"
           >
             Edit
           </button>
@@ -77,6 +78,7 @@
             size="xs"
             tuiIconButton
             type="button"
+            (click)="moreActions(room)"
           >
             More
           </button>
@@ -85,6 +87,18 @@
     </tr>
     }
   </tbody>
+  <tfoot>
+    <tr class="bg-white pt-4">
+      <td colspan="6">
+        <tui-pagination
+          [length]="roomsData()?.pagination?.totalPages!"
+          [(index)]="currentPage"
+          (indexChange)="onPageChange($event)"
+          
+        ></tui-pagination>
+      </td>
+    </tr>
+  </tfoot>
 </table>
 
 }

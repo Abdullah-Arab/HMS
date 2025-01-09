@@ -11,13 +11,20 @@ export class RoomService {
   url = 'http://localhost:3003/api/v1/rooms';
   constructor(private http: HttpClient) {}
 
-  getRooms(): Observable<any> {
-    return this.http.get<ApiResponse<Room[]>>(this.url).pipe(
-      retry(3),
-      catchError((res) => {
-        console.error('Error fetching rooms (service)', res.error.message);
-        return throwError(res.error);
+  getRooms(page: number, limit: number): Observable<any> {
+    return this.http
+      .get<ApiResponse<Room[]>>(this.url, {
+        params: {
+          page: page.toString(),
+          limit: limit.toString(),
+        },
       })
-    );
+      .pipe(
+        retry(3),
+        catchError((res) => {
+          console.error('Error fetching rooms (service)', res.error.message);
+          return throwError(res.error);
+        })
+      );
   }
 }
