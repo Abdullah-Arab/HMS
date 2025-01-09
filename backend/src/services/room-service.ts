@@ -1,5 +1,5 @@
-import roomModel from "../models/roomModel";
-import { Room } from "../types/Room";
+import roomModel from "../models/room-model";
+import { Room } from "../types/room";
 
 class RoomService {
   getAllRooms = async (page: number = 1, limit: number = 10) => {

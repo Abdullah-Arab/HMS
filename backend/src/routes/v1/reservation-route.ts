@@ -1,7 +1,7 @@
 import express from "express";
-import reservationsController from "../../controllers/reservationsController";
+import reservationsController from "../../controllers/reservations-controller";
 import { Type } from "@sinclair/typebox";
-import { validate } from "../../middleware/validateRequest";
+import { validate } from "../../middleware/validate-request";
 
 const router = express.Router();
 

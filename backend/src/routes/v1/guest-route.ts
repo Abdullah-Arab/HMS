@@ -1,7 +1,7 @@
 import express from "express";
-import guestController from "../../controllers/guestController";
+import guestController from "../../controllers/guest-controller";
 import { Type } from "@sinclair/typebox";
-import { validate } from "../../middleware/validateRequest";
+import { validate } from "../../middleware/validate-request";
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get("/", validate(GetGuestsQuerySchema), guestController.getGuests); // G
 
 // schema for input validation using typebox
 const GuestIdSchema = Type.Object({
-  id: Type.String(), 
+  id: Type.String(),
 });
 router.get(
   "/:id",

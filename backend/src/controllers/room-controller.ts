@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import roomService from "../services/roomService";
+import roomService from "../services/room-service";
 import asyncHandler from "express-async-handler";
-import { formatResponse } from "../utils/fromatResponse";
-import { handleError } from "../utils/errorHandler";
+import { formatResponse } from "../utils/fromat-response";
+import { handleError } from "../utils/handle-error";
 
 class RoomController {
   getRooms = asyncHandler(async (req: Request, res: Response) => {

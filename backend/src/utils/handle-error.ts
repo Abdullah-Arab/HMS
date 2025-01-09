@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { formatResponse } from "./fromatResponse";
+import { formatResponse } from "./fromat-response";
 
 /**
  * A utility function to handle errors and send consistent error responses.

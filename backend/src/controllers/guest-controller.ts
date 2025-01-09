@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import guestService from "../services/guestService";
+import guestService from "../services/guest-service";
 import asyncHandler from "express-async-handler";
-import { formatResponse } from "../utils/fromatResponse";
-import { handleError } from "../utils/errorHandler";
+import { formatResponse } from "../utils/fromat-response";
+import { handleError } from "../utils/handle-error";
 
 class GuestController {
   getGuests = asyncHandler(async (req: Request, res: Response) => {

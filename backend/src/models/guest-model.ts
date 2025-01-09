@@ -1,5 +1,5 @@
 import db from "../db";
-import { Guest } from "../types/Guest";
+import { Guest } from "../types/guest";
 
 class GuestModel {
   // Get all guests

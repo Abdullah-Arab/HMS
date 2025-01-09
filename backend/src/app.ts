@@ -1,10 +1,10 @@
 // Import the 'express' module along with 'Request' and 'Response' types from express
 import express, { Request, Response } from "express";
-import { errorHandler } from "./middleware/errorHandler";
+import { errorHandler } from "./middleware/error-handler";
 import cors from "cors";
-import guestRoute from "./routes/v1/guestRoute";
-import roomRoute from "./routes/v1/roomRoute";
-import reservationRoute from "./routes/v1/reservationRoute";
+import guestRoute from "./routes/v1/guest-route";
+import roomRoute from "./routes/v1/room-route";
+import reservationRoute from "./routes/v1/reservation-route";
 
 // Create an Express application
 const app = express();

@@ -1,7 +1,7 @@
 import express from "express";
-import roomController from "../../controllers/roomController";
+import roomController from "../../controllers/room-controller";
 import { Type } from "@sinclair/typebox";
-import { validate } from "../../middleware/validateRequest";
+import { validate } from "../../middleware/validate-request";
 
 const router = express.Router();
 
@@ -20,11 +20,7 @@ router.get(
   validate(RoomIdSchema, "params"),
   roomController.getRoomById
 ); // GET /rooms/:id : requires input
-router.put(
-  "/:id",
-  validate(RoomIdSchema, "params"),
-  roomController.updateRoom
-); // PUT /rooms/:id : requires input
+router.put("/:id", validate(RoomIdSchema, "params"), roomController.updateRoom); // PUT /rooms/:id : requires input
 router.delete(
   "/:id",
   validate(RoomIdSchema, "params"),
