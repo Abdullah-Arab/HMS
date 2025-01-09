@@ -1,12 +1,10 @@
-
-
-
- type Room = {
+type Room = {
   id: string;
   name: string;
   room_number: string;
-  createdAt: string;
-  updatedAt: string;
+  capacity: number;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export default Room;
