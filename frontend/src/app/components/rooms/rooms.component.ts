@@ -16,7 +16,8 @@ import {
 } from '@taiga-ui/kit';
 import { TuiCell } from '@taiga-ui/layout';
 import { TuiTable } from '@taiga-ui/addon-table';
-import { FormsModule } from '@angular/forms';import Room from '../../../types/room';
+import { FormsModule } from '@angular/forms';
+import Room from '../../../types/room';
 import ApiResponse from '../../../types/api-response';
 import { RoomService } from '../../services/room.service';
 @Component({
@@ -40,6 +41,9 @@ export class RoomsComponent implements OnInit {
   roomsData = signal<ApiResponse<Room> | undefined>(undefined);
   isLoading = signal<boolean>(true);
   roomService: RoomService = inject(RoomService);
+  onTap () {
+    console.log('Tapped');
+  };
 
   ngOnInit() {
     this.roomService.getRooms().subscribe({

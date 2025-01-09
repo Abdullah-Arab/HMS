@@ -1,6 +1,9 @@
 <!-- Title -->
-<app-title [title]="'Rooms Mangament'" />
-
+<app-title
+  [title]="'Rooms Mangament'"
+  [actionTitle]="'Add Room'"
+  [onTap]="onTap"
+/>
 
 @if (isLoading()) {
 <tui-loader [showLoader]="true"></tui-loader>
@@ -23,7 +26,7 @@
           />
         </div>
       </th> -->
-      <th tuiTh>ID</th>
+
       <th tuiTh>Room Number</th>
       <th tuiTh>Capacity</th>
       <th tuiTh>Title</th>
@@ -36,17 +39,6 @@
   <tbody tuiTbody>
     @for (room of (roomsData()?.data || []); track $index) {
     <tr>
-      <!-- <td tuiTd>
-        <div [tuiCell]="'m'">
-          <input tuiCheckbox type="checkbox" [size]="'m'" />
-        </div>
-      </td> -->
-
-      <td tuiTd>
-        <span tuiTitle>
-          {{ room.id }}
-        </span>
-      </td>
       <td tuiTd>
         <span tuiTitle>
           {{ room.room_number }}
@@ -94,7 +86,5 @@
     }
   </tbody>
 </table>
-
-
 
 }
