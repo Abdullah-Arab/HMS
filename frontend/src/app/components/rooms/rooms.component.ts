@@ -79,6 +79,8 @@ export class RoomsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching rooms', error);
+        this.isLoading.set(false);
+        this.roomsData.set(error);
       },
       complete: () => {
         console.log('Rooms fetch complete');

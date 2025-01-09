@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import ApiResponse from '../../types/api-response';
 import Room from '../../types/room';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, retry, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +13,10 @@ export class RoomService {
 
   getRooms(): Observable<any> {
     return this.http.get<ApiResponse<Room[]>>(this.url).pipe(
-      catchError((error) => {
-        console.error('Error fetching rooms', error);
-        return throwError(error);
+      retry(3),
+      catchError((res) => {
+        console.error('Error fetching rooms (service)', res.error.message);
+        return throwError(res.error);
       })
     );
   }

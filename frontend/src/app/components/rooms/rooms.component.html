@@ -1,6 +1,11 @@
 @if (isLoading()) {
 <p class="tui-text_h1">LOADING</p>
+}@else if (roomsData()?.status == 'error') {
+<p class="tui-text_h1">ERROR</p>
+<p class="tui-text_h2">{{ roomsData()?.message }}</p>
+
 } @else {
+
 <table tuiTable [size]="'m'" [style.width.rem]="58">
   <thead>
     <tr>
