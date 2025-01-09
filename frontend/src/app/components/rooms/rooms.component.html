@@ -9,7 +9,25 @@
 <app-title [title]="'Rooms Mangament'" />
 
 <!-- Tabs -->
+<tui-tabs [(activeItemIndex)]="activeItemIndex" class="mb-4">
+  <button
+    iconStart="@tui.book-text"
+    tuiTab
+    type="button"
+    (click)="onClick('Maps')"
+  >
+    Details
+  </button>
 
+  <button
+    iconStart="@tui.history"
+    tuiTab
+    type="button"
+    (click)="onClick('Settings')"
+  >
+    History
+  </button>
+</tui-tabs>
 
 <table tuiTable [size]="'m'" class="w-full">
   <thead>

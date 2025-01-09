@@ -4,7 +4,7 @@ import { RoomService } from './../../services/room.service';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TuiTable } from '@taiga-ui/addon-table';
-import { TuiButton, TuiDropdown, TuiLoader, TuiTitle, } from '@taiga-ui/core';
+import { TuiButton, TuiDropdown, TuiLoader, TuiTitle } from '@taiga-ui/core';
 import {
   TuiAvatar,
   TuiBadge,
@@ -14,9 +14,10 @@ import {
   TuiProgressBar,
   TuiRadioList,
   TuiStatus,
+  TuiTabs,
 } from '@taiga-ui/kit';
 import { TuiCell } from '@taiga-ui/layout';
-import { TitleComponent } from "../title/title.component";
+import { TitleComponent } from '../title/title.component';
 @Component({
   selector: 'app-rooms',
   standalone: true,
@@ -29,13 +30,15 @@ import { TitleComponent } from "../title/title.component";
     TuiTable,
     TuiTitle,
     TuiLoader,
-    TitleComponent
-],
+    TitleComponent,
+    TuiTabs,
+  ],
   templateUrl: './rooms.component.html',
 })
 export class RoomsComponent implements OnInit {
   roomsData = signal<ApiResponse<Room> | undefined>(undefined);
   isLoading = signal<boolean>(true);
+  protected activeItemIndex = 0;
 
   roomService: RoomService = inject(RoomService);
 
@@ -78,5 +81,9 @@ export class RoomsComponent implements OnInit {
     //   this.data.forEach((item) => {
     //     item.selected = checked;
     //   });
+  }
+
+  protected onClick(item: string): void {
+      console.log('Clicked', item);
   }
 }
