@@ -5,11 +5,16 @@
 <p class="tui-text_body-xl">{{ roomsData()?.message }}</p>
 
 } @else {
+<!-- Title -->
+<app-title [title]="'Rooms Mangament'" />
 
-<table tuiTable [size]="'m'" [style.width.rem]="58">
+<!-- Tabs -->
+
+
+<table tuiTable [size]="'m'" class="w-full">
   <thead>
     <tr>
-      <th tuiTh>
+      <!-- <th tuiTh>
         <div [tuiCell]="'m'">
           <input
             tuiCheckbox
@@ -19,7 +24,7 @@
             (ngModelChange)="onCheck($event)"
           />
         </div>
-      </th>
+      </th> -->
       <th tuiTh>ID</th>
       <th tuiTh>Room Number</th>
       <th tuiTh>Capacity</th>
@@ -33,11 +38,11 @@
   <tbody tuiTbody>
     @for (room of (roomsData()?.data || []); track $index) {
     <tr>
-      <td tuiTd>
+      <!-- <td tuiTd>
         <div [tuiCell]="'m'">
           <input tuiCheckbox type="checkbox" [size]="'m'" />
         </div>
-      </td>
+      </td> -->
 
       <td tuiTd>
         <span tuiTitle>

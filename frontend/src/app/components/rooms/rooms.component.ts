@@ -4,7 +4,7 @@ import { RoomService } from './../../services/room.service';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TuiTable } from '@taiga-ui/addon-table';
-import { TuiButton, TuiDropdown, TuiLoader, TuiTitle } from '@taiga-ui/core';
+import { TuiButton, TuiDropdown, TuiLoader, TuiTitle, } from '@taiga-ui/core';
 import {
   TuiAvatar,
   TuiBadge,
@@ -16,21 +16,21 @@ import {
   TuiStatus,
 } from '@taiga-ui/kit';
 import { TuiCell } from '@taiga-ui/layout';
+import { TitleComponent } from "../title/title.component";
 @Component({
   selector: 'app-rooms',
   standalone: true,
   imports: [
     FormsModule,
     TuiButton,
-    TuiCell,
-    TuiCheckbox,
     TuiDropdown,
     TuiItemsWithMore,
     TuiStatus,
     TuiTable,
     TuiTitle,
     TuiLoader,
-  ],
+    TitleComponent
+],
   templateUrl: './rooms.component.html',
 })
 export class RoomsComponent implements OnInit {
