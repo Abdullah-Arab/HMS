@@ -59,12 +59,11 @@ export class RoomsComponent implements OnInit {
   roomsCount = signal<number | undefined>(undefined);
   isLoading = signal<boolean>(true);
 
-
-
   roomService: RoomService = inject(RoomService);
   currentPage = 0; // Start from 0 for tui-pagination
   pageSize = 10; // Default number of items per page
   pageSizeOptions = [5, 10, 20, 50]; // Options for items per page
+  router: any;
 
   ngOnInit() {
     this.fetchRooms();
@@ -106,5 +105,9 @@ export class RoomsComponent implements OnInit {
     this.pageSize = limit; // Update the limit
     this.currentPage = 0; // Reset to the first page
     this.fetchRooms(); // Fetch rooms with the new limit
+  }
+
+  navigateToRoomDetails(id: string): void {
+    this.router.navigate([`/rooms/${id}`]);
   }
 }

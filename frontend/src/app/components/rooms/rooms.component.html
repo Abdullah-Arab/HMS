@@ -82,7 +82,14 @@
       </td>
       <td tuiTd>
         <span tuiStatus>
-          <button appearance="outline" tuiButton type="button">Details</button>
+          <button
+            appearance="outline"
+            tuiButton
+            type="button"
+            [routerLink]="['/rooms', room.id]"
+          >
+            Details
+          </button>
         </span>
       </td>
     </tr>
