@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Serve static files from the Angular app
-const buildPath = path.join(__dirname, "dist");
+const buildPath = path.join(__dirname, 'dist');
 app.use(express.static(buildPath));
 
 // Handle Angular routing (redirect all other routes to index.html)
