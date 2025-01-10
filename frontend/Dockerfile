@@ -1,7 +1,7 @@
 # Dockerfile for Angular Frontend with Node.js
 
 # Stage 1: Build Angular App
-FROM node:16 as build
+FROM node:22 as build
 
 # Set working directory
 WORKDIR /app
