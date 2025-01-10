@@ -37,4 +37,4 @@ RUN npm install express
 EXPOSE 3456
 
 # Start the server
-CMD ["node", "server.js"]
+CMD ["ts-node", "server.ts"]
