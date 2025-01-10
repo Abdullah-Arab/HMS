@@ -1,9 +1,40 @@
 <!-- Title -->
 <app-title
-  [title]="'Rooms Mangament'"
+  [title]="'Rooms Management'"
   [actionTitle]="'Add Room'"
-  [onTap]="onTap"
+  [onTap]="addRoom"
 />
+
+<!-- Room Form (for create/edit) -->
+ <!-- should change to dialog -->
+@if (selectedRoom() !== null) {
+<div tuiCardMedium tuiAppearance="neutral" class="mb-4">
+  <form (ngSubmit)="saveRoom(selectedRoom()!)">
+    <input
+      tuiInput
+      [(ngModel)]="selectedRoom()!.room_number"
+      placeholder="Room Number"
+      required
+    />
+    <input
+      tuiInput
+      [(ngModel)]="selectedRoom()!.capacity"
+      placeholder="Capacity"
+      required
+    />
+    <input
+      tuiInput
+      [(ngModel)]="selectedRoom()!.name"
+      placeholder="Title"
+      required
+    />
+    <button tuiButton type="submit">Save</button>
+    <button tuiButton type="button" (click)="cancel()">Cancel</button>
+  </form>
+</div>
+}
+
+<!-- Rooms List -->
 <div tuiCardMedium tuiAppearance="neutral" class="mb-4">
   <div tuiHeader>
     <h1 tuiTitle>
@@ -18,23 +49,10 @@
 } @else if (roomsData()?.status == 'error') {
 <p class="tui-text_h1">Opss!</p>
 <p class="tui-text_body-xl">{{ roomsData()?.message }}</p>
-
 } @else {
 <table tuiTable [size]="'m'" class="w-full">
   <thead>
     <tr>
-      <!-- <th tuiTh>
-        <div [tuiCell]="'m'">
-          <input
-            tuiCheckbox
-            type="checkbox"
-            [ngModel]="checked"
-            [size]="'m'"
-            (ngModelChange)="onCheck($event)"
-          />
-        </div>
-      </th> -->
-
       <th tuiTh>Room Number</th>
       <th tuiTh>Capacity</th>
       <th tuiTh>Title</th>
@@ -48,25 +66,19 @@
     @for (room of (roomsData()?.data || []); track $index) {
     <tr>
       <td tuiTd>
-        <span tuiTitle>
-          {{ room.room_number }}
-        </span>
+        <span tuiTitle>{{ room.room_number }}</span>
       </td>
       <td tuiTd>
-        <span tuiTitle> {{ room.capacity }} </span>
+        <span tuiTitle>{{ room.capacity }}</span>
       </td>
       <td tuiTd>
-        <span tuiTitle> {{ room.name }} </span>
+        <span tuiTitle>{{ room.name }}</span>
       </td>
       <td tuiTd>
-        <span tuiTitle>
-          {{ room.updated_at }}
-        </span>
+        <span tuiTitle>{{ room.updated_at }}</span>
       </td>
       <td tuiTd>
-        <span tuiTitle>
-          {{ room.created_at }}
-        </span>
+        <span tuiTitle>{{ room.created_at }}</span>
       </td>
       <td tuiTd>
         <span tuiStatus>
@@ -82,13 +94,13 @@
           </button>
           <button
             appearance="action"
-            iconStart="@tui.ellipsis"
+            iconStart="@tui.trash"
             size="xs"
             tuiIconButton
             type="button"
-            (click)="moreActions(room)"
+            (click)="deleteRoom(room.id!)"
           >
-            More
+            Delete
           </button>
         </span>
       </td>
@@ -98,14 +110,15 @@
   <tfoot>
     <tr class="bg-white pt-4">
       <td colspan="6">
+        @if (roomsData()?.pagination?.totalPages) {
         <tui-pagination
-          [length]="roomsData()?.pagination?.totalPages!"
+          [length]="roomsData()!.pagination!.totalPages"
           [(index)]="currentPage"
           (indexChange)="onPageChange($event)"
         ></tui-pagination>
+        }
       </td>
     </tr>
   </tfoot>
 </table>
-
 }

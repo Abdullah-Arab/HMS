@@ -1,7 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-
 import { TitleComponent } from '../title/title.component';
-
 import {
   TuiAppearance,
   TuiButton,
@@ -17,14 +15,12 @@ import {
   TuiDataListWrapper,
   TuiButtonSelect,
 } from '@taiga-ui/kit';
-
 import { TuiTable } from '@taiga-ui/addon-table';
 import { FormsModule } from '@angular/forms';
 import Room from '../../../types/room';
 import ApiResponse from '../../../types/api-response';
 import { RoomService } from '../../services/room.service';
 import { TuiCardMedium } from '@taiga-ui/layout';
-
 
 @Component({
   selector: 'app-rooms',
@@ -51,25 +47,24 @@ export class RoomsComponent implements OnInit {
   roomsData = signal<ApiResponse<Room> | undefined>(undefined);
   roomsCount = signal<number | undefined>(undefined);
   isLoading = signal<boolean>(true);
+  isEditing = signal<boolean>(false);
+  selectedRoom = signal<Room | null>(null);
 
   roomService: RoomService = inject(RoomService);
-  currentPage = 1;
-  pageSize = 10;
-  onTap() {
-    console.log('Tapped');
-  }
+  currentPage = 0; // Start from 0 for tui-pagination
+  pageSize = 10; // Number of items per page
 
   ngOnInit() {
     this.fetchRooms();
   }
 
+  // fetch rooms with pagination
   fetchRooms(): void {
-    this.roomService.getRooms(this.currentPage, this.pageSize).subscribe({
+    this.isLoading.set(true);
+    const apiPage = this.currentPage + 1; // convert to backend's 1-based index
+    this.roomService.getRooms(apiPage, this.pageSize).subscribe({
       next: (res) => {
-        console.log('res fetched', res);
-
         const response: ApiResponse<Room> = res;
-
         if (response.status === 'error') {
           console.error('Error fetching rooms', response.error);
           return;
@@ -88,20 +83,57 @@ export class RoomsComponent implements OnInit {
     });
   }
 
-
+  // Handle page change
   onPageChange(page: number): void {
-    //todo: fix this, page++
-    console.log('Page change', page);
-
-    this.currentPage = page;
-    this.fetchRooms();
+    this.currentPage = page; // Update the current page (0-based index)
+    this.fetchRooms(); // Fetch rooms for the new page
   }
 
+  // Add a new room
+  addRoom(): void {
+    this.isEditing.set(false);
+    this.selectedRoom.set(null);
+  }
+
+  // Edit an existing room
   editRoom(room: Room): void {
-    // Implement edit room logic
+    this.isEditing.set(true);
+    this.selectedRoom.set(room);
   }
 
-  moreActions(room: Room): void {
-    // Implement more actions logic
+  // Save room (create or update)
+  saveRoom(room: Room): void {
+    if (this.isEditing()) {
+      this.roomService.updateRoom(room.id!, room).subscribe({
+        next: () => {
+          this.fetchRooms();
+          this.selectedRoom.set(null);
+        },
+        error: (error) => console.error('Error updating room', error),
+      });
+    } else {
+      this.roomService.createRoom(room).subscribe({
+        next: () => {
+          this.fetchRooms();
+          this.selectedRoom.set(null);
+        },
+        error: (error) => console.error('Error creating room', error),
+      });
+    }
+  }
+
+  // Delete a room
+  deleteRoom(id: string): void {
+    if (confirm('Are you sure you want to delete this room?')) {
+      this.roomService.deleteRoom(id).subscribe({
+        next: () => this.fetchRooms(),
+        error: (error) => console.error('Error deleting room', error),
+      });
+    }
+  }
+
+  // Cancel editing or adding
+  cancel(): void {
+    this.selectedRoom.set(null);
   }
 }
