@@ -1,5 +1,5 @@
 # Dockerfile for API
-FROM node:16
+FROM node:22
 
 # Set the working directory
 WORKDIR /app
