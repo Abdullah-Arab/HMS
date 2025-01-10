@@ -9,11 +9,14 @@ import { TuiButton } from '@taiga-ui/core';
 export class TitleComponent {
   title = input.required();
   actionTitle = input.required();
-  @Input() onTap!: () => void; // Pass a function as `Input`
+  @Input() onTap!: () => void; // Function input
 
-  excuteAction() {
+  executeAction() {
     if (this.onTap) {
-      this.onTap(); // Execute the function passed as input
+      console.log('Executing onTap');
+      this.onTap();
+    } else {
+      console.error('onTap is not defined');
     }
   }
 }

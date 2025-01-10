@@ -99,6 +99,7 @@ export class RoomsComponent implements OnInit {
 
   // Add a new room
   addRoom(): void {
+    console.log('Add Room clicked');
     this.isEditing.set(false);
     this.selectedRoom.set(null);
   }
