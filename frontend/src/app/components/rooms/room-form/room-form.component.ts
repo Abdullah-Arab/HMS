@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { TitleComponent } from '../../title/title.component';
 import {
   FormBuilder,
@@ -11,6 +11,7 @@ import { TuiButton, TuiDataList } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit';
 import Room from '../../../../types/room';
 import { RoomService } from '../../../services/room.service';
+import ApiResponse from '../../../../types/api-response';
 
 @Component({
   selector: 'app-room-form',
@@ -28,12 +29,13 @@ import { RoomService } from '../../../services/room.service';
 })
 export class RoomFormComponent {
   roomForm: FormGroup;
-  isLoading = false;
-  successMessage: string | null = null;
-  errorMessage: string | null = null;
-  roomService: RoomService = inject(RoomService);
+  isLoading = signal(false);
+  apiResponse = signal<ApiResponse<Room> | undefined>(undefined);
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private roomService: RoomService
+  ) {
     this.roomForm = this.formBuilder.group({
       number: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       capacity: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
@@ -42,34 +44,43 @@ export class RoomFormComponent {
   }
 
   onSubmit(): void {
-    this.successMessage = null;
-    this.errorMessage = null;
-
     if (this.roomForm.valid) {
-      this.isLoading = true;
+      this.isLoading.set(true);
 
-      const newRoom: Partial<Room> = {
+      const newRoom = {
         room_number: this.roomForm.get('number')?.value,
         capacity: this.roomForm.get('capacity')?.value,
         name: this.roomForm.get('name')?.value,
       };
 
       this.roomService.createRoom(newRoom).subscribe({
-        next: (response) => {
-          this.successMessage = 'Room added successfully!';
-          this.roomForm.reset(); // Reset the form
+        next: (res: ApiResponse<Room>) => {
+          this.apiResponse.set(res);
+          if (res.status === 'success') {
+            this.roomForm.reset();
+          } else {
+            console.error('Error creating room:', res.error);
+          }
         },
         error: (error) => {
-          this.errorMessage =
-            error.message || 'An error occurred while adding the room.';
+          const errorResponse: ApiResponse<Room> = {
+            status: 'error',
+            message: 'Failed to add room',
+            error: error.message || error,
+          };
+          this.apiResponse.set(errorResponse);
         },
         complete: () => {
-          this.isLoading = false;
+          this.isLoading.set(false);
         },
       });
     } else {
-      this.errorMessage =
-        'Please fix the errors in the form before submitting.';
+      const invalidResponse: ApiResponse<Room> = {
+        status: 'error',
+        message: 'Form validation failed',
+        error: 'Please fix the form errors before submitting.',
+      };
+      this.apiResponse.set(invalidResponse);
     }
   }
 }

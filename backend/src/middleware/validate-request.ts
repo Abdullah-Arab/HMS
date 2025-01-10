@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { Type, Static } from "@sinclair/typebox";
+import { formatResponse } from "../utils/fromat-response";
 
 // Configure Ajv
 const ajv = new Ajv({ allErrors: true });
@@ -18,13 +19,18 @@ export function validate(
     const data = req[source];
 
     if (!validateFn(data)) {
-       res.status(400).json({
-        error: "Invalid request",
-        details: validateFn.errors?.map((err) => ({
-          path: err.instancePath,
-          message: err.message,
-        })),
-      });
+      res.status(400).json(
+        formatResponse(
+          "error",
+          "Invalid request: ",
+          undefined,
+          undefined,
+          validateFn.errors?.map((err) => ({
+            path: err.instancePath,
+            message: err.message,
+          }))
+        )
+      );
     }
 
     next();
