@@ -34,7 +34,7 @@ services:
 
   migrations:
     build:
-      context: ./migrations
+      context: ./backend
     command: npx knex migrate:latest
     depends_on:
       - db
