@@ -52,16 +52,17 @@ export class RoomsComponent implements OnInit {
 
   roomService: RoomService = inject(RoomService);
   currentPage = 0; // Start from 0 for tui-pagination
-  pageSize = 10; // Number of items per page
+  pageSize = 10; // Default number of items per page
+  pageSizeOptions = [5, 10, 20, 50]; // Options for items per page
 
   ngOnInit() {
     this.fetchRooms();
   }
 
-  // fetch rooms with pagination
+  // Fetch rooms with pagination
   fetchRooms(): void {
     this.isLoading.set(true);
-    const apiPage = this.currentPage + 1; // convert to backend's 1-based index
+    const apiPage = this.currentPage + 1; // Convert to backend's 1-based index
     this.roomService.getRooms(apiPage, this.pageSize).subscribe({
       next: (res) => {
         const response: ApiResponse<Room> = res;
@@ -87,6 +88,13 @@ export class RoomsComponent implements OnInit {
   onPageChange(page: number): void {
     this.currentPage = page; // Update the current page (0-based index)
     this.fetchRooms(); // Fetch rooms for the new page
+  }
+
+  // Handle limit change
+  onLimitChange(limit: number): void {
+    this.pageSize = limit; // Update the limit
+    this.currentPage = 0; // Reset to the first page
+    this.fetchRooms(); // Fetch rooms with the new limit
   }
 
   // Add a new room

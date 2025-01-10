@@ -6,7 +6,6 @@
 />
 
 <!-- Room Form (for create/edit) -->
- <!-- should change to dialog -->
 @if (selectedRoom() !== null) {
 <div tuiCardMedium tuiAppearance="neutral" class="mb-4">
   <form (ngSubmit)="saveRoom(selectedRoom()!)">
@@ -38,9 +37,31 @@
 <div tuiCardMedium tuiAppearance="neutral" class="mb-4">
   <div tuiHeader>
     <h1 tuiTitle>
-      {{ roomsData()?.pagination?.total }}
+      {{ roomsData()?.pagination?.total || 0 }}
       <span tuiSubtitle>Rooms</span>
     </h1>
+  </div>
+</div>
+
+<!-- Pagination Controls -->
+<div class="flex items-center justify-between mb-4">
+  <div>
+    <span class="tui-text_body-m">Items per page:</span>
+    <select
+      tuiSelect
+      [ngModel]="pageSize"
+      (ngModelChange)="onLimitChange($event)"
+    >
+      @for (option of pageSizeOptions; track option) {
+      <option [value]="option">{{ option }}</option>
+      }
+    </select>
+  </div>
+  <div>
+    <span class="tui-text_body-m">
+      Page {{ currentPage + 1 }} of {{ roomsData()?.pagination?.totalPages || 1
+      }}
+    </span>
   </div>
 </div>
 
