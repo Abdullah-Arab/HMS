@@ -1,9 +1,9 @@
-# Dockerfile for Angular Frontend with PM2
+# Dockerfile for Angular Frontend with Node.js
 
 # Stage 1: Build Angular App
-FROM node:22 as build
+FROM node:16 as build
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
 # Copy package.json and package-lock.json
@@ -18,20 +18,23 @@ COPY . .
 # Build the Angular app
 RUN npm run build --prod
 
-# Stage 2: Serve with PM2
-FROM node:16
+# Stage 2: Serve with Node.js
+FROM node:22
 
-# Install PM2 globally
-RUN npm install -g pm2
-
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
 # Copy built Angular app from the build stage
-COPY --from=build /app/dist/[Frontend] /app/dist
+COPY --from=build /app/dist /app/dist
+
+# Copy the Node.js server file
+COPY server.ts /app/server.ts
+
+# Install Express
+RUN npm install express
 
 # Expose the port
 EXPOSE 3000
 
-# Start PM2 to serve the app
-CMD ["pm2", "serve", "/app/dist", "3000", "--spa"]
+# Start the server
+CMD ["node", "server.js"]
