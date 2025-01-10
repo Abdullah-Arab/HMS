@@ -1,5 +1,3 @@
-# Dockerfile for Angular Frontend with Node.js
-
 # Stage 1: Build Angular App
 FROM node:22 as build
 
@@ -30,11 +28,11 @@ COPY --from=build /app/dist /app/dist
 # Copy the Node.js server file
 COPY server.ts /app/server.ts
 
-# Install Express
-RUN npm install express
+# Install required Node.js modules
+RUN npm install express ts-node typescript
 
 # Expose the port
 EXPOSE 3456
 
 # Start the server
-CMD ["ts-node", "server.ts"]
+CMD ["npx", "ts-node", "server.ts"]
