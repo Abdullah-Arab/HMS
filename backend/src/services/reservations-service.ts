@@ -1,5 +1,5 @@
 import reservationsModel from "../models/reservations-model";
-import { Reservation } from "../types/reservation";
+import { Reservation } from "../types/Reservation";
 
 // --todo: retrieve upcoming/past reservations for specific guest/room sorted by most recent--
 // --todo: total amount of upcoming reservations for specific guest/room--

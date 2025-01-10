@@ -1,5 +1,5 @@
 import db from "../db";
-import { Room } from "../types/room";
+import { Room } from "../types/Room";
 
 class RoomModel {
   // Get all rooms
