@@ -1,5 +1,5 @@
 import guestModel from "../models/guest-model";
-import { Guest } from "../types/guest";
+import { Guest } from "../types/Guest";
 
 class GuestService {
   getAllGuests = async (page: number = 1, limit: number = 10) => {
