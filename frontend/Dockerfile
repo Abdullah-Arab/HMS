@@ -28,7 +28,7 @@ WORKDIR /app
 COPY --from=build /app/dist /app/dist
 
 # Copy the Node.js server file
-COPY server.ts /.ts
+COPY server.ts /server.ts
 
 # Install Express
 RUN npm install express
