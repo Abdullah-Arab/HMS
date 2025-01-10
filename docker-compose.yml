@@ -6,7 +6,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "6666:6666"
+      - "3456:3456"
     environment:
       - NODE_ENV=production
     env_file:
@@ -19,7 +19,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "6667:6667"
+      - "3345:3345"
 
   db:
     image: postgres:latest
@@ -35,7 +35,12 @@ services:
   migrations:
     build:
       context: ./backend
-    command: ["sh", "-c", "until pg_isready -h db -U postgres; do sleep 1; done; npx knex migrate:latest"]
+    command:
+      [
+        "sh",
+        "-c",
+        "until pg_isready -h db -U postgres; do sleep 1; done; npx knex migrate:latest",
+      ]
     depends_on:
       - db
 

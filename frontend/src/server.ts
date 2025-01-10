@@ -14,7 +14,7 @@ app.get('*', (req, res) => {
 });
 
 // Start the server
-const PORT = process.env['PORT'] || 6666;
+const PORT = process.env['PORT'] || 3456;
 app.listen(PORT, () => {
   console.log(`Frontend is running on http://localhost:${PORT}`);
 });
