@@ -35,7 +35,7 @@ services:
   migrations:
     build:
       context: ./backend
-    command: npx knex migrate:latest
+    command: ["sh", "-c", "until pg_isready -h db -U postgres; do sleep 1; done; npx knex migrate:latest"]
     depends_on:
       - db
 
