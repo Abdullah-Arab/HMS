@@ -2,36 +2,52 @@
 <app-title
   [title]="'Rooms Management'"
   [actionTitle]="'Add Room'"
-  [onTap]="addRoom"
+  [onTap]="openAddRoomDialog"
 />
-
-<!-- Room Form (for create/edit) -->
-@if (selectedRoom() !== null) {
-<div tuiCardMedium tuiAppearance="neutral" class="mb-4">
-  <form (ngSubmit)="saveRoom(selectedRoom()!)">
-    <input
-      tuiInput
-      [(ngModel)]="selectedRoom()!.room_number"
-      placeholder="Room Number"
-      required
-    />
-    <input
-      tuiInput
-      [(ngModel)]="selectedRoom()!.capacity"
-      placeholder="Capacity"
-      required
-    />
-    <input
-      tuiInput
-      [(ngModel)]="selectedRoom()!.name"
-      placeholder="Title"
-      required
-    />
-    <button tuiButton type="submit">Save</button>
-    <button tuiButton type="button" (click)="cancel()">Cancel</button>
-  </form>
-</div>
-}
+<!-- Room Form in Dialog -->
+<ng-template
+  let-observer
+  [tuiResponsiveDialogOptions]="options"
+  [(tuiResponsiveDialog)]="open"
+>
+  <div class="p-4 space-y-4">
+    <h3 class="text-lg font-bold">
+      {{ isEditing() ? "Edit Room" : "Add Room" }}
+    </h3>
+    <form
+      (ngSubmit)="saveRoom(selectedRoom()!); observer.complete()"
+      class="space-y-4"
+    >
+      <input
+        tuiInput
+        [(ngModel)]="selectedRoom()!.room_number"
+        placeholder="Room Number"
+        required
+        name="room_number"
+      />
+      <input
+        tuiInput
+        [(ngModel)]="selectedRoom()!.capacity"
+        placeholder="Capacity"
+        required
+        name="capacity"
+      />
+      <input
+        tuiInput
+        [(ngModel)]="selectedRoom()!.name"
+        placeholder="Title"
+        required
+        name="name"
+      />
+      <div class="flex justify-end space-x-2">
+        <button tuiButton type="button" (click)="observer.complete()">
+          Cancel
+        </button>
+        <button tuiButton type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
 
 <!-- Rooms List -->
 <div tuiCardMedium tuiAppearance="neutral" class="mb-4">
@@ -115,7 +131,7 @@
             size="xs"
             tuiIconButton
             type="button"
-            (click)="editRoom(room)"
+            (click)="openEditRoomDialog(room)"
           >
             Edit
           </button>

@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  ChangeDetectionStrategy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { TitleComponent } from '../title/title.component';
 import {
   TuiAppearance,
@@ -21,6 +27,9 @@ import Room from '../../../types/room';
 import ApiResponse from '../../../types/api-response';
 import { RoomService } from '../../services/room.service';
 import { TuiCardMedium } from '@taiga-ui/layout';
+import { TuiResponsiveDialog } from '@taiga-ui/addon-mobile';
+import type { TuiResponsiveDialogOptions } from '@taiga-ui/addon-mobile';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-rooms',
@@ -40,8 +49,11 @@ import { TuiCardMedium } from '@taiga-ui/layout';
     TuiPagination,
     TuiAppearance,
     TuiCardMedium,
+    TuiResponsiveDialog,
+    RouterLink,
   ],
   templateUrl: './rooms.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoomsComponent implements OnInit {
   roomsData = signal<ApiResponse<Room> | undefined>(undefined);
@@ -111,25 +123,25 @@ export class RoomsComponent implements OnInit {
   }
 
   // Save room (create or update)
-  saveRoom(room: Room): void {
-    if (this.isEditing()) {
-      this.roomService.updateRoom(room.id!, room).subscribe({
-        next: () => {
-          this.fetchRooms();
-          this.selectedRoom.set(null);
-        },
-        error: (error) => console.error('Error updating room', error),
-      });
-    } else {
-      this.roomService.createRoom(room).subscribe({
-        next: () => {
-          this.fetchRooms();
-          this.selectedRoom.set(null);
-        },
-        error: (error) => console.error('Error creating room', error),
-      });
-    }
-  }
+  // saveRoom(room: Room): void {
+  //   if (this.isEditing()) {
+  //     this.roomService.updateRoom(room.id!, room).subscribe({
+  //       next: () => {
+  //         this.fetchRooms();
+  //         this.selectedRoom.set(null);
+  //       },
+  //       error: (error) => console.error('Error updating room', error),
+  //     });
+  //   } else {
+  //     this.roomService.createRoom(room).subscribe({
+  //       next: () => {
+  //         this.fetchRooms();
+  //         this.selectedRoom.set(null);
+  //       },
+  //       error: (error) => console.error('Error creating room', error),
+  //     });
+  //   }
+  // }
 
   // Delete a room
   deleteRoom(id: string): void {
@@ -144,5 +156,52 @@ export class RoomsComponent implements OnInit {
   // Cancel editing or adding
   cancel(): void {
     this.selectedRoom.set(null);
+  }
+
+  protected readonly routes: any = {};
+  protected open = false;
+
+  protected readonly options: Partial<TuiResponsiveDialogOptions> = {
+    label: 'Responsive',
+    size: 's',
+  };
+
+  openAddRoomDialog(): void {
+    this.isEditing.set(false);
+    this.selectedRoom.set({
+      id: '',
+      name: '',
+      room_number: '',
+      capacity: 0,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+    this.open = true; // Open dialog
+  }
+
+  openEditRoomDialog(room: Room): void {
+    this.isEditing.set(true);
+    this.selectedRoom.set({ ...room });
+    this.open = true; // Open dialog
+  }
+
+  saveRoom(room: Room): void {
+    if (this.isEditing()) {
+      this.roomService.updateRoom(room.id!, room).subscribe({
+        next: () => {
+          this.fetchRooms();
+          this.open = false; // Close dialog
+        },
+        error: (error) => console.error('Error updating room', error),
+      });
+    } else {
+      this.roomService.createRoom(room).subscribe({
+        next: () => {
+          this.fetchRooms();
+          this.open = false; // Close dialog
+        },
+        error: (error) => console.error('Error creating room', error),
+      });
+    }
   }
 }
