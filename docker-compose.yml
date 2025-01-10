@@ -6,7 +6,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3456:3456"
+      - "3345:3345"
     environment:
       - NODE_ENV=production
     env_file:
@@ -19,7 +19,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3345:3345"
+      - "3456:3456"
 
   db:
     image: postgres:latest
