@@ -2,6 +2,9 @@ import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 
+
+dotenv.config(); // This loads environment variables from the .env file
+
 const app = express();
 
 // Serve static files from the Angular app
