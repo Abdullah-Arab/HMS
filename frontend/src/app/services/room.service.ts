@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import ApiResponse from '../../types/api-response';
-import Room from '../../types/Room';
 import { catchError, Observable, retry, throwError } from 'rxjs';
+import Room from 'types/room';
+
 
 @Injectable({
   providedIn: 'root',

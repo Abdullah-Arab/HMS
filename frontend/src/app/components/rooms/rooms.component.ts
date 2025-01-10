@@ -23,13 +23,13 @@ import {
 } from '@taiga-ui/kit';
 import { TuiTable } from '@taiga-ui/addon-table';
 import { FormsModule } from '@angular/forms';
-import Room from '../../../types/Room';
 import ApiResponse from '../../../types/api-response';
 import { RoomService } from '../../services/room.service';
 import { TuiCardMedium } from '@taiga-ui/layout';
 import { TuiResponsiveDialog } from '@taiga-ui/addon-mobile';
 import type { TuiResponsiveDialogOptions } from '@taiga-ui/addon-mobile';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import Room from 'types/room';
 
 @Component({
   selector: 'app-rooms',

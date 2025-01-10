@@ -9,7 +9,7 @@ import {
 import { TuiInputModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { TuiButton, TuiDataList } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit';
-import Room from '../../../../types/Room';
+import Room from 'types/room';
 import { RoomService } from '../../../services/room.service';
 import ApiResponse from '../../../../types/api-response';
 
