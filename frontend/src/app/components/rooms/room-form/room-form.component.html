@@ -1,4 +1,3 @@
-<app-title title="Add New Room" actionTitle="Add" />
 <form
   class="container mx-auto p-4"
   [formGroup]="roomForm"
@@ -8,8 +7,9 @@
   <tui-input formControlName="number" class="mb-4">
     Room Number
     <input placeholder="Enter room number" tuiTextfieldLegacy />
-    @if (roomForm.get('number')?.invalid && roomForm.get('number')?.touched) {
-    <div class="text-red-500 text-sm mt-1">
+    <!-- ngIf="roomForm.get('number')?.invalid && roomForm.get('number')?.touched" -->
+    @if ( roomForm.get('number')?.invalid && roomForm.get('number')?.touched ) {
+    <div * class="text-red-500 text-sm mt-1">
       Room number is required and must be numeric.
     </div>
     }
@@ -19,8 +19,9 @@
   <tui-input formControlName="capacity" class="mb-4">
     Room Capacity
     <input placeholder="Enter room capacity" tuiTextfieldLegacy />
-    @if (roomForm.get('capacity')?.invalid && roomForm.get('capacity')?.touched)
-    {
+    <!-- *ngIf="roomForm.get('capacity')?.invalid && roomForm.get('capacity')?.touched" -->
+    @if ( roomForm.get('capacity')?.invalid && roomForm.get('capacity')?.touched
+    ){
     <div class="text-red-500 text-sm mt-1">
       Room capacity is required and must be numeric.
     </div>
@@ -33,8 +34,20 @@
     <input placeholder="Enter room name (optional)" tuiTextfieldLegacy />
   </tui-input>
 
+  <!-- Feedback Messages -->
+  @if (successMessage) {
+  <div class="text-green-500 text-sm mb-4">{{ successMessage }}</div>
+  } @if (errorMessage) {
+  <div class="text-red-500 text-sm mb-4">{{ errorMessage }}</div>
+  }
+
   <!-- Submit Button -->
-  <button type="submit" size="m" tuiButton [disabled]="roomForm.invalid">
-    Add Room
+  <button
+    type="submit"
+    size="m"
+    tuiButton
+    [disabled]="roomForm.invalid || isLoading"
+  >
+    @if (!isLoading) { Add Room } @else { Adding... }
   </button>
 </form>

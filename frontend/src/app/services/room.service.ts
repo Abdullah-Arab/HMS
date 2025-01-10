@@ -30,7 +30,7 @@ export class RoomService {
       );
   }
 
-  // Fetch rooms count 
+  // Fetch rooms count
   getRoomsCount(): Observable<any> {
     return this.http.get<ApiResponse<number>>(`${this.url}/count`).pipe(
       retry(3),
@@ -45,7 +45,7 @@ export class RoomService {
   }
 
   // Create a new room
-  createRoom(room: Room): Observable<any> {
+  createRoom(room: Partial<Room>): Observable<any> {
     return this.http.post<ApiResponse<Room>>(this.url, room).pipe(
       catchError((res) => {
         console.error('Error creating room (service)', res.error.message);

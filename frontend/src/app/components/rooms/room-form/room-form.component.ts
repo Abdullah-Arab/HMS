@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TitleComponent } from '../../title/title.component';
 import {
   FormBuilder,
@@ -9,6 +9,8 @@ import {
 import { TuiInputModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 import { TuiButton, TuiDataList } from '@taiga-ui/core';
 import { TuiDataListWrapper } from '@taiga-ui/kit';
+import Room from '../../../../types/room';
+import { RoomService } from '../../../services/room.service';
 
 @Component({
   selector: 'app-room-form',
@@ -26,6 +28,10 @@ import { TuiDataListWrapper } from '@taiga-ui/kit';
 })
 export class RoomFormComponent {
   roomForm: FormGroup;
+  isLoading = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+  roomService: RoomService = inject(RoomService);
 
   constructor(private formBuilder: FormBuilder) {
     this.roomForm = this.formBuilder.group({
@@ -36,19 +42,34 @@ export class RoomFormComponent {
   }
 
   onSubmit(): void {
-    console.log('hey');
+    this.successMessage = null;
+    this.errorMessage = null;
+
     if (this.roomForm.valid) {
-      console.log('Form Submitted Successfully!', this.roomForm.value);
+      this.isLoading = true;
+
+      const newRoom: Partial<Room> = {
+        room_number: this.roomForm.get('number')?.value,
+        capacity: this.roomForm.get('capacity')?.value,
+        name: this.roomForm.get('name')?.value,
+      };
+
+      this.roomService.createRoom(newRoom).subscribe({
+        next: (response) => {
+          this.successMessage = 'Room added successfully!';
+          this.roomForm.reset(); // Reset the form
+        },
+        error: (error) => {
+          this.errorMessage =
+            error.message || 'An error occurred while adding the room.';
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
     } else {
-      console.log('Form Submission Failed. Please check the fields.');
+      this.errorMessage =
+        'Please fix the errors in the form before submitting.';
     }
-  }
-
-  get roomNumberContent() {
-    return this.roomForm.get('number')?.value;
-  }
-
-  get roomCapacityContent() {
-    return this.roomForm.get('capacity')?.value;
   }
 }
