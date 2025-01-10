@@ -49,9 +49,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     TuiPagination,
     TuiAppearance,
     TuiCardMedium,
-    TuiResponsiveDialog,
     RouterLink,
-    RouterOutlet,
   ],
   templateUrl: './rooms.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -60,8 +58,8 @@ export class RoomsComponent implements OnInit {
   roomsData = signal<ApiResponse<Room> | undefined>(undefined);
   roomsCount = signal<number | undefined>(undefined);
   isLoading = signal<boolean>(true);
-  isEditing = signal<boolean>(false);
-  selectedRoom = signal<Room | null>(null);
+
+
 
   roomService: RoomService = inject(RoomService);
   currentPage = 0; // Start from 0 for tui-pagination
@@ -108,101 +106,5 @@ export class RoomsComponent implements OnInit {
     this.pageSize = limit; // Update the limit
     this.currentPage = 0; // Reset to the first page
     this.fetchRooms(); // Fetch rooms with the new limit
-  }
-
-  // Add a new room
-  addRoom(): void {
-    console.log('Add Room clicked');
-    this.isEditing.set(false);
-    this.selectedRoom.set(null);
-  }
-
-  // Edit an existing room
-  editRoom(room: Room): void {
-    this.isEditing.set(true);
-    this.selectedRoom.set(room);
-  }
-
-  // Save room (create or update)
-  // saveRoom(room: Room): void {
-  //   if (this.isEditing()) {
-  //     this.roomService.updateRoom(room.id!, room).subscribe({
-  //       next: () => {
-  //         this.fetchRooms();
-  //         this.selectedRoom.set(null);
-  //       },
-  //       error: (error) => console.error('Error updating room', error),
-  //     });
-  //   } else {
-  //     this.roomService.createRoom(room).subscribe({
-  //       next: () => {
-  //         this.fetchRooms();
-  //         this.selectedRoom.set(null);
-  //       },
-  //       error: (error) => console.error('Error creating room', error),
-  //     });
-  //   }
-  // }
-
-  // Delete a room
-  deleteRoom(id: string): void {
-    if (confirm('Are you sure you want to delete this room?')) {
-      this.roomService.deleteRoom(id).subscribe({
-        next: () => this.fetchRooms(),
-        error: (error) => console.error('Error deleting room', error),
-      });
-    }
-  }
-
-  // Cancel editing or adding
-  cancel(): void {
-    this.selectedRoom.set(null);
-  }
-
-  protected readonly routes: any = {};
-  protected open = false;
-
-  protected readonly options: Partial<TuiResponsiveDialogOptions> = {
-    label: 'Responsive',
-    size: 's',
-  };
-
-  openAddRoomDialog(): void {
-    this.isEditing.set(false);
-    this.selectedRoom.set({
-      id: '',
-      name: '',
-      room_number: '',
-      capacity: 0,
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
-    this.open = true; // Open dialog
-  }
-
-  openEditRoomDialog(room: Room): void {
-    this.isEditing.set(true);
-    this.selectedRoom.set({ ...room });
-    this.open = true; // Open dialog
-  }
-
-  saveRoom(room: Room): void {
-    if (this.isEditing()) {
-      this.roomService.updateRoom(room.id!, room).subscribe({
-        next: () => {
-          this.fetchRooms();
-          this.open = false; // Close dialog
-        },
-        error: (error) => console.error('Error updating room', error),
-      });
-    } else {
-      this.roomService.createRoom(room).subscribe({
-        next: () => {
-          this.fetchRooms();
-          this.open = false; // Close dialog
-        },
-        error: (error) => console.error('Error creating room', error),
-      });
-    }
   }
 }

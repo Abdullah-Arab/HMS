@@ -5,51 +5,6 @@
   routerLink="/rooms/new-room"
 />
 
-<!-- Room Form in Dialog -->
-<ng-template
-  let-observer
-  [tuiResponsiveDialogOptions]="options"
-  [(tuiResponsiveDialog)]="open"
->
-  <div class="p-4 space-y-4">
-    <h3 class="text-lg font-bold">
-      {{ isEditing() ? "Edit Room" : "Add Room" }}
-    </h3>
-    <form
-      (ngSubmit)="saveRoom(selectedRoom()!); observer.complete()"
-      class="space-y-4"
-    >
-      <input
-        tuiInput
-        [(ngModel)]="selectedRoom()!.room_number"
-        placeholder="Room Number"
-        required
-        name="room_number"
-      />
-      <input
-        tuiInput
-        [(ngModel)]="selectedRoom()!.capacity"
-        placeholder="Capacity"
-        required
-        name="capacity"
-      />
-      <input
-        tuiInput
-        [(ngModel)]="selectedRoom()!.name"
-        placeholder="Title"
-        required
-        name="name"
-      />
-      <div class="flex justify-end space-x-2">
-        <button tuiButton type="button" (click)="observer.complete()">
-          Cancel
-        </button>
-        <button tuiButton type="submit">Save</button>
-      </div>
-    </form>
-  </div>
-</ng-template>
-
 <!-- Rooms List -->
 <div tuiCardMedium tuiAppearance="neutral" class="mb-4">
   <div tuiHeader>
@@ -126,26 +81,7 @@
       </td>
       <td tuiTd>
         <span tuiStatus>
-          <button
-            appearance="action"
-            iconStart="@tui.pencil"
-            size="xs"
-            tuiIconButton
-            type="button"
-            (click)="openEditRoomDialog(room)"
-          >
-            Edit
-          </button>
-          <button
-            appearance="action"
-            iconStart="@tui.trash"
-            size="xs"
-            tuiIconButton
-            type="button"
-            (click)="deleteRoom(room.id!)"
-          >
-            Delete
-          </button>
+          <button appearance="outline" tuiButton type="button">Details</button>
         </span>
       </td>
     </tr>
