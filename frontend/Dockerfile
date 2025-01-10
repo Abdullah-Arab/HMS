@@ -22,17 +22,17 @@ FROM node:22
 # Set working directory
 WORKDIR /app
 
-# Copy built Angular app from the build stage
+# Copy the built Angular app
 COPY --from=build /app/dist /app/dist
 
-# Copy the Node.js server file
-COPY server.ts /app/server.ts
+# Install express
+RUN npm install express
 
-# Install required Node.js modules
-RUN npm install express ts-node typescript
+# Copy the server file
+COPY server.js /app/server.js
 
 # Expose the port
 EXPOSE 3456
 
 # Start the server
-CMD ["npx", "ts-node", "server.ts"]
+CMD ["node", "server.js"]
