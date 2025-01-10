@@ -10,6 +10,7 @@ const GetRoomsQuerySchema = Type.Object({
   limit: Type.Optional(Type.Number({ minimum: 1 })),
 });
 router.get("/", validate(GetRoomsQuerySchema), roomController.getRooms); // GET /rooms : no input required
+router.get("/count", roomController.getRoomsCount); // GET /rooms/count : no input required
 
 // schema for input validation using typebox
 const RoomIdSchema = Type.Object({

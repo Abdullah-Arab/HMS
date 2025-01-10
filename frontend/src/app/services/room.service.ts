@@ -27,4 +27,15 @@ export class RoomService {
         })
       );
   }
+
+  // get rooms count
+  getRoomsCount(): Observable<any> {
+    return this.http.get<ApiResponse<number>>(`${this.url}/count`).pipe(
+      retry(3),
+      catchError((res) => {
+        console.error('Error fetching rooms count (service)', res.error.message);
+        return throwError(res.error);
+      })
+    );
+  }
 }

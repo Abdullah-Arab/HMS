@@ -26,6 +26,19 @@ class RoomController {
       handleError(res, "Failed to retrieve rooms", error);
     }
   });
+
+  getRoomsCount = asyncHandler(async (req: Request, res: Response) => {
+    try {
+      const count = await roomService.getRoomsCount();
+
+      res
+        .status(200)
+        .json(formatResponse("success", "Rooms count retrieved successfully", count));
+    } catch (error) {
+      handleError(res, "Failed to retrieve rooms count", error);
+    }
+  });
+
   createRoom = asyncHandler(async (req: Request, res: Response) => {
     try {
       const room = await roomService.addRoom(req.body);

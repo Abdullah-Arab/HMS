@@ -25,6 +25,7 @@ import ApiResponse from '../../../types/api-response';
 import { RoomService } from '../../services/room.service';
 import { TuiCardMedium } from '@taiga-ui/layout';
 
+
 @Component({
   selector: 'app-rooms',
   standalone: true,
@@ -48,6 +49,7 @@ import { TuiCardMedium } from '@taiga-ui/layout';
 })
 export class RoomsComponent implements OnInit {
   roomsData = signal<ApiResponse<Room> | undefined>(undefined);
+  roomsCount = signal<number | undefined>(undefined);
   isLoading = signal<boolean>(true);
 
   roomService: RoomService = inject(RoomService);
@@ -85,6 +87,7 @@ export class RoomsComponent implements OnInit {
       },
     });
   }
+
 
   onPageChange(page: number): void {
     //todo: fix this, page++

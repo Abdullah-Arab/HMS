@@ -17,6 +17,10 @@ class RoomService {
     };
   };
 
+  getRoomsCount = async (): Promise<number> => {
+    return await roomModel.getRoomsCount();
+  };
+
   addRoom = async (
     roomData: Omit<Room, "id" | "created_at" | "updated_at">
   ): Promise<Room> => {
