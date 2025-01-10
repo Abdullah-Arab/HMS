@@ -1,6 +1,7 @@
 <div class="flex justify-between items-center mb-4">
   <h1 class="tui-text_h1">{{ title() }}</h1>
+  @if(!onTap){
   <button size="m" tuiButton type="button" (click)="executeAction()">
-    {{ actionTitle() }}
-  </button>
+    {{ actionTitle() }}</button
+  >}
 </div>
