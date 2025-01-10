@@ -6,7 +6,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "6667:6667"
     environment:
       - NODE_ENV=production
     env_file:
@@ -30,7 +30,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "6666:6666"
     environment:
       NODE_ENV: production
 

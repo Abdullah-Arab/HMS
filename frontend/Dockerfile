@@ -34,7 +34,7 @@ COPY server.ts /app/server.ts
 RUN npm install express
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 6666
 
 # Start the server
 CMD ["node", "server.js"]
