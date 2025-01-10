@@ -29,7 +29,7 @@ import { RoomService } from '../../services/room.service';
 import { TuiCardMedium } from '@taiga-ui/layout';
 import { TuiResponsiveDialog } from '@taiga-ui/addon-mobile';
 import type { TuiResponsiveDialogOptions } from '@taiga-ui/addon-mobile';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-rooms',
@@ -51,6 +51,7 @@ import { RouterLink } from '@angular/router';
     TuiCardMedium,
     TuiResponsiveDialog,
     RouterLink,
+    RouterOutlet,
   ],
   templateUrl: './rooms.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

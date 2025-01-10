@@ -2,18 +2,9 @@
 <app-title
   [title]="'Rooms Management'"
   [actionTitle]="'Add Room'"
-  [onTap]="openAddRoomDialog"
+  routerLink="/rooms/new-room"
 />
 
-<button
-  size="m"
-  tuiButton
-  type="button"
-  class="mb-4"
-  (click)="openAddRoomDialog()"
->
-  Add Room
-</button>
 <!-- Room Form in Dialog -->
 <ng-template
   let-observer

@@ -3,6 +3,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { GuestsComponent } from './components/guests/guests.component';
 import { ReservationsComponent } from './components/reservations/reservations.component';
+import { RoomFormComponent } from './components/rooms/room-form/room-form.component';
 
 export const routes: Routes = [
   {
@@ -17,10 +18,17 @@ export const routes: Routes = [
   {
     path: 'rooms',
     // component: RoomsComponent,
-    loadComponent: () =>
-      import('./components/rooms/rooms.component').then(
-        (m) => m.RoomsComponent
-      ),
+
+    children: [
+      {
+        path: '',
+        component: RoomsComponent,
+      },
+      {
+        path: 'new-room',
+        component: RoomFormComponent,
+      },
+    ],
   },
   {
     path: 'guests',
@@ -38,5 +46,6 @@ export const routes: Routes = [
         (m) => m.ReservationsComponent
       ),
   },
+
   // { path: '**', component: PageNotFoundComponent }
 ];
