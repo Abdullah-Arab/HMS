@@ -9,6 +9,7 @@ import { TuiButton } from '@taiga-ui/core';
 export class TitleComponent {
   title = input.required();
   actionTitle = input.required();
+  showAction = input<boolean>(false);
   @Input() onTap!: () => void; // Function input
 
   executeAction() {
