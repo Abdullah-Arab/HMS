@@ -3,7 +3,6 @@ import {
   inject,
   ChangeDetectionStrategy,
   OnInit,
-  signal,
 } from '@angular/core';
 import { TitleComponent } from '../title/title.component';
 import {
@@ -55,59 +54,40 @@ import Room from 'types/room';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoomsComponent implements OnInit {
-  roomsData = signal<ApiResponse<Room> | undefined>(undefined);
-  roomsCount = signal<number | undefined>(undefined);
-  isLoading = signal<boolean>(true);
+  rooms: Room[] = [];
+  totalRecords = 0;
+  limit = 10;
+  currentPage = 1; // Start with 1 for clarity
+  pageSizeOptions = [5, 10, 20, 50];
 
-  roomService: RoomService = inject(RoomService);
-  currentPage = 0; // Start from 0 for tui-pagination
-  pageSize = 10; // Default number of items per page
-  pageSizeOptions = [5, 10, 20, 50]; // Options for items per page
-  router: any;
+  constructor(private roomService: RoomService) {}
 
   ngOnInit() {
-    this.fetchRooms();
+    this.fetchRooms(this.currentPage, this.limit);
   }
 
   // Fetch rooms with pagination
-  fetchRooms(): void {
-    this.isLoading.set(true);
-    const apiPage = this.currentPage + 1; // Convert to backend's 1-based index
-    this.roomService.getRooms(apiPage, this.pageSize).subscribe({
-      next: (res) => {
-        const response: ApiResponse<Room> = res;
-        if (response.status === 'error') {
-          console.error('Error fetching rooms', response.error);
-          return;
-        }
-        this.roomsData.set(response);
+  fetchRooms(page: number, limit: number): void {
+    this.roomService.getRooms({ page, limit }).subscribe({
+      next: (res: ApiResponse<Room[]>) => {
+        this.rooms = res.data ?? [];
+        this.totalRecords = res.pagination?.total ?? 0;
+        this.currentPage = res.pagination?.page ?? 1;
       },
       error: (error) => {
         console.error('Error fetching rooms', error);
-        this.isLoading.set(false);
-        this.roomsData.set(error);
-      },
-      complete: () => {
-        console.log('Rooms fetch complete');
-        this.isLoading.set(false);
       },
     });
   }
 
   // Handle page change
-  onPageChange(page: number): void {
-    this.currentPage = page; // Update the current page (0-based index)
-    this.fetchRooms(); // Fetch rooms for the new page
+  onPageChange(event: { page: number; limit: number }): void {
+    this.fetchRooms(event.page, event.limit);
   }
 
   // Handle limit change
   onLimitChange(limit: number): void {
-    this.pageSize = limit; // Update the limit
-    this.currentPage = 0; // Reset to the first page
-    this.fetchRooms(); // Fetch rooms with the new limit
-  }
-
-  navigateToRoomDetails(id: string): void {
-    this.router.navigate([`/rooms/${id}`]);
+    this.limit = limit;
+    this.fetchRooms(1, limit); // Reset to first page
   }
 }

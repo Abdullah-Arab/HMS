@@ -3,7 +3,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { GuestsComponent } from './components/guests/guests.component';
 import { ReservationsComponent } from './components/reservations/reservations.component';
-import { RoomFormComponent } from './components/rooms/room-form/room-form.component';
+
 import { RoomComponent } from './components/rooms/room/room.component';
 
 export const routes: Routes = [
@@ -25,10 +25,10 @@ export const routes: Routes = [
         path: '',
         component: RoomsComponent,
       },
-      {
-        path: 'new-room',
-        component: RoomFormComponent,
-      },
+      // {
+      //   path: 'new-room',
+      //   component: RoomFormComponent,
+      // },
       {
         path: ':id',
         component: RoomComponent,
