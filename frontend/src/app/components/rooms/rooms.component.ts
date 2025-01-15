@@ -67,6 +67,7 @@ export class RoomsComponent implements OnInit {
   }
 
   // Fetch rooms with pagination
+  //todo: handle next & error
   fetchRooms(page: number, limit: number): void {
     this.roomService.getRooms({ page, limit }).subscribe({
       next: (res: ApiResponse<Room[]>) => {

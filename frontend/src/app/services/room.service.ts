@@ -22,6 +22,41 @@ export class RoomService {
     });
   };
 
+  // Fetch a single room
+  getRoom = (id: string): Observable<ApiResponse<Room>> => {
+    return this.api.get<ApiResponse<Room>>(`${this.url}/${id}`, {
+      responseType: 'json',
+    });
+  };
+
+  // Fetch rooms count
+  getRoomsCount = (): Observable<ApiResponse<number>> => {
+    return this.api.get<ApiResponse<number>>(`${this.url}/count`, {
+      responseType: 'json',
+    });
+  };
+
+  // Create a new room
+  createRoom = (room: Partial<Room>): Observable<ApiResponse<Room>> => {
+    return this.api.post<ApiResponse<Room>>(this.url, room, {
+      responseType: 'json',
+    });
+  };
+
+  // Update an existing room
+  updateRoom = (id: string, room: Room): Observable<ApiResponse<Room>> => {
+    return this.api.put<ApiResponse<Room>>(`${this.url}/${id}`, room, {
+      responseType: 'json',
+    });
+  };
+
+  // Delete a room
+  deleteRoom = (id: string): Observable<ApiResponse<Room>> => {
+    return this.api.delete<ApiResponse<Room>>(`${this.url}/${id}`, {
+      responseType: 'json',
+    });
+  };
+
   // // Fetch rooms count
   // getRoomsCount(): Observable<any> {
   //   return this.http.get<ApiResponse<number>>(`${this.url}/count`).pipe(
