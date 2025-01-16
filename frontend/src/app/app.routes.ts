@@ -3,8 +3,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RoomsComponent } from './components/rooms/rooms.component';
 import { GuestsComponent } from './components/guests/guests.component';
 import { ReservationsComponent } from './components/reservations/reservations.component';
-
-import { RoomComponent } from './components/rooms/room/room.component';
+import { RoomDetailsComponent } from './components/rooms/room-details/room-details.component';
 
 export const routes: Routes = [
   {
@@ -31,7 +30,7 @@ export const routes: Routes = [
       // },
       {
         path: ':id',
-        component: RoomComponent,
+        component: RoomDetailsComponent,
       },
     ],
   },

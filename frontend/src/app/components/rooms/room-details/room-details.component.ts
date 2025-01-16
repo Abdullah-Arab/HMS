@@ -1,15 +1,14 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { TitleComponent } from '../../title/title.component';
+import { Component, signal } from '@angular/core';
 import { TuiTabs } from '@taiga-ui/kit';
-import { RoomsDetailsComponent } from '../rooms-details/rooms-details.component';
+import { TitleComponent } from '../../title/title.component';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-room',
-  imports: [TuiTabs, RoomsDetailsComponent, TitleComponent],
-  templateUrl: './room.component.html',
+  selector: 'app-room-details',
+  imports: [TuiTabs, TitleComponent],
+  templateUrl: './room-details.component.html'
 })
-export class RoomComponent implements OnInit {
+export class RoomDetailsComponent {
   roomId: string | null = null;
 
   constructor(private route: ActivatedRoute) {}
