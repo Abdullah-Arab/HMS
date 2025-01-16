@@ -23,7 +23,7 @@ FROM node:22
 WORKDIR /app
 
 # Copy the built Angular app
-COPY --from=build /app/dist/frontend /app/dist
+COPY --from=build /app/dist/frontend/browser /app/dist
 
 # Install express and dotenv
 RUN npm install express dotenv

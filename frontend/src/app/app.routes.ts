@@ -4,6 +4,7 @@ import { RoomsComponent } from './components/rooms/rooms.component';
 import { GuestsComponent } from './components/guests/guests.component';
 import { ReservationsComponent } from './components/reservations/reservations.component';
 import { RoomDetailsComponent } from './components/rooms/room-details/room-details.component';
+import { NewRoomComponent } from './components/rooms/new-room/new-room.component';
 
 export const routes: Routes = [
   {
@@ -24,10 +25,10 @@ export const routes: Routes = [
         path: '',
         component: RoomsComponent,
       },
-      // {
-      //   path: 'new-room',
-      //   component: RoomFormComponent,
-      // },
+      {
+        path: 'new-room',
+        component: NewRoomComponent,
+      },
       {
         path: ':id',
         component: RoomDetailsComponent,

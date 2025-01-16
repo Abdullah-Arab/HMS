@@ -1,0 +1,59 @@
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Add a new room
+      <span tuiSubtitle>
+        Fill in the form below to add a new room to the system.
+      </span>
+    </h2>
+  </header>
+
+  <form [formGroup]="roomForm" tuiForm="m" (ngSubmit)="onSubmit()">
+    <tui-textfield>
+      <label tuiLabel>Room Number</label>
+      <input formControlName="number" tuiTextfield placeholder="101" />
+    </tui-textfield>
+    <tui-error
+      formControlName="number"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Room Name</label>
+      <input
+        formControlName="name"
+        tuiTextfield
+        placeholder="Conference Room"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="name"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Capacity</label>
+      <input formControlName="capacity" tuiTextfield placeholder="50" />
+    </tui-textfield>
+    <tui-error
+      formControlName="capacity"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+    <footer class="flex justify-end m-8">
+      <button
+        tuiButton
+        appearance="secondary"
+        type="button"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button tuiButton type="submit" [disabled]="roomForm.invalid">
+        Save
+      </button>
+    </footer>
+  </form>
+</div>
