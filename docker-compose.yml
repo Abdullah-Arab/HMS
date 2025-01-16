@@ -39,7 +39,7 @@ services:
       [
         "sh",
         "-c",
-        "until pg_isready -h db -U postgres; do sleep 1; done; npx knex migrate:latest",
+        "until pg_isready -h db -U postgres; do sleep 1; done; npx knex migrate:latest && npx knex seed:run",
       ]
     depends_on:
       - db
