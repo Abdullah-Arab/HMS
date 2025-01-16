@@ -136,5 +136,30 @@
 </div>
 
 } @else {
-<h1>Past Reservations</h1>
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Room History
+      <span tuiSubtitle
+        >Total past reservations is: {{ upcomingReservations.length }}</span
+      >
+    </h2>
+  </header>
+  <div class="content">
+    <!-- Check if there are upcoming reservations -->
+    @if (pastReservations.length > 0) {
+    <!-- Iterate over upcoming reservations -->
+    @for ( reservation of (pastReservations || []); track $index) {
+    <div class="reservation-item">
+      <!-- <p>Reservation ID: {{ reservation.id }}</p>
+          <p>Guest: {{ reservation.guestName }}</p>
+          <p>Check-In: {{ reservation.checkIn | date }}</p>
+          <p>Check-Out: {{ reservation.checkOut | date }}</p> -->
+    </div>
+    <hr />
+    } } @else {
+    <p>No reservations available.</p>
+    }
+  </div>
+</div>
 }
