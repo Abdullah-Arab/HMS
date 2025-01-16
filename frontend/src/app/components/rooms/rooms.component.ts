@@ -56,39 +56,52 @@ import Room from 'types/room';
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
   totalRecords = 0;
-  limit = 10;
+  pageSize = 10;
   currentPage = 1; // Start with 1 for clarity
   pageSizeOptions = [5, 10, 20, 50];
+  totalPages = 0;
+  isLoading = false;
+  hasError = false;
+  errorMesage = '';
 
   constructor(private roomService: RoomService) {}
 
   ngOnInit() {
-    this.fetchRooms(this.currentPage, this.limit);
+    this.fetchRooms(this.currentPage, this.pageSize);
   }
 
   // Fetch rooms with pagination
   //todo: handle next & error
   fetchRooms(page: number, limit: number): void {
+    this.isLoading = true;
     this.roomService.getRooms({ page, limit }).subscribe({
       next: (res: ApiResponse<Room[]>) => {
         this.rooms = res.data ?? [];
         this.totalRecords = res.pagination?.total ?? 0;
         this.currentPage = res.pagination?.page ?? 1;
+        this.totalPages = res.pagination?.totalPages ?? 0;
+        this.isLoading = false;
       },
-      error: (error) => {
+      error: (
+        // error: ApiResponse<string>
+        error
+      ) => {
         console.error('Error fetching rooms', error);
+        this.hasError = true;
+        this.errorMesage = error;
+        this.isLoading = false;
       },
     });
   }
 
   // Handle page change
-  onPageChange(event: { page: number; limit: number }): void {
-    this.fetchRooms(event.page, event.limit);
+  onPageChange(page: number): void {
+    this.fetchRooms(page, this.pageSize);
   }
 
   // Handle limit change
   onLimitChange(limit: number): void {
-    this.limit = limit;
+    this.pageSize = limit;
     this.fetchRooms(1, limit); // Reset to first page
   }
 }
