@@ -39,11 +39,11 @@ export const routes: Routes = [
   {
     path: 'guests',
     // component: GuestsComponent,
-    loadComponent: () =>
-      import('./components/guests/guests.component').then(
-        (m) => m.GuestsComponent
-      ),
     children: [
+      {
+        path: '',
+        component: GuestsComponent,
+      },
       {
         path: ':id',
         component: GuestDetailsComponent,
