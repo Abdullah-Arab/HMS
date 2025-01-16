@@ -15,7 +15,7 @@
 <!-- Tab Content -->
 <!-- {{ activeItemIndex }} -->
 @if (activeItemIndex === 0) {
-<div tuiCardLarge>
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
   <header tuiHeader>
     <h2 tuiTitle>
       Room Details
@@ -84,9 +84,20 @@
   </form>
 </div>
 
-<h1>General Insights</h1>
-<h1>Current Reservation</h1>
-<h1>Upcomming Reservations</h1>
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>Current Reservation</h2>
+  </header>
+</div>
+
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Upcomming Reservations
+      <span tuiSubtitle>Total upcomming reservations is: </span>
+    </h2>
+  </header>
+</div>
 
 } @else {
 <h1>Past Reservations</h1>
