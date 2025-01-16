@@ -1,0 +1,80 @@
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Add a New Reservation
+      <span tuiSubtitle>
+        Fill in the form below to add a new reservation to the system.
+      </span>
+    </h2>
+  </header>
+
+  <form [formGroup]="reservationForm" tuiForm="m" (ngSubmit)="onSubmit()">
+    <tui-textfield>
+      <label tuiLabel>Guest Name</label>
+      <input
+        formControlName="guestName"
+        tuiTextfield
+        placeholder="Guest Name"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="guestName"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Room Number</label>
+      <input formControlName="roomNumber" tuiTextfield placeholder="101" />
+    </tui-textfield>
+    <tui-error
+      formControlName="roomNumber"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Check-In Date</label>
+      <input
+        formControlName="checkInDate"
+        tuiTextfield
+        placeholder="YYYY-MM-DD"
+        type="date"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="checkInDate"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Check-Out Date</label>
+      <input
+        formControlName="checkOutDate"
+        tuiTextfield
+        placeholder="YYYY-MM-DD"
+        type="date"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="checkOutDate"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <footer class="flex justify-end m-8">
+      <button
+        tuiButton
+        appearance="secondary"
+        type="button"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button tuiButton type="submit" [disabled]="reservationForm.invalid">
+        Save
+      </button>
+    </footer>
+  </form>
+</div>

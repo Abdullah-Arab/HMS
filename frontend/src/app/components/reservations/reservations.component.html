@@ -1,1 +1,16 @@
-<p>reservations works!</p>
+<app-title [title]="'Reservations'" actionTitle="'Edit'" />
+<!-- Tabs -->
+<tui-tabs [(activeItemIndex)]="activeItemIndex" class="mb-4">
+  @for (item of tabs(); track $index) {
+  <button
+    [iconStart]="'@tui.' + item.icon"
+    tuiTab
+    type="button"
+    (click)="onClick('Maps')"
+  >
+    {{ item.title }}
+  </button>
+  }
+</tui-tabs>
+
+@if (activeItemIndex == 0){ we }@else { oui }
