@@ -1,4 +1,4 @@
-<app-title [title]="'Room ' + roomId" actionTitle="'Edit'" />
+<app-title [title]="'Room ' + room?.room_number" actionTitle="'Edit'" />
 <!-- Tabs -->
 <tui-tabs [(activeItemIndex)]="activeItemIndex" class="mb-4">
   @for (item of tabs(); track $index) {
@@ -15,7 +15,62 @@
 <!-- Tab Content -->
 <!-- {{ activeItemIndex }} -->
 @if (activeItemIndex === 0) {
-<h1>Room Info</h1>
+<div tuiCardLarge [style.max-width.rem]="36">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Room Details
+      <span tuiSubtitle>Edit room information below</span>
+    </h2>
+  </header>
+
+  <form
+    [formGroup]="roomForm"
+    tuiForm="m"
+    (ngSubmit)="onSubmit()"
+    [style.max-width.rem]="32"
+  >
+    <tui-textfield class="mb-4">
+      <label tuiLabel>Room Number</label>
+      <input formControlName="number" tuiTextfield placeholder="101" />
+    </tui-textfield>
+    <tui-error
+      formControlName="number"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+
+    <tui-textfield class="mb-4">
+      <label tuiLabel>Room Name</label>
+      <input
+        formControlName="name"
+        tuiTextfield
+        placeholder="Conference Room"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="name"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+
+    <tui-textfield class="mb-4">
+      <label tuiLabel>Capacity</label>
+      <input formControlName="capacity" tuiTextfield placeholder="50" />
+    </tui-textfield>
+    <tui-error
+      formControlName="capacity"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+
+    <footer>
+      <button tuiButton appearance="secondary" type="button" class="m-4">
+        Cancel
+      </button>
+      <button tuiButton type="submit" [disabled]="roomForm.invalid" class="m-4">
+        Save
+      </button>
+    </footer>
+  </form>
+</div>
+
 <h1>General Insights</h1>
 <h1>Current Reservation</h1>
 <h1>Upcomming Reservations</h1>
