@@ -84,19 +84,55 @@
   </form>
 </div>
 
+<!-- Current Reservation Card -->
 <div tuiAppearance="floating" tuiCardLarge class="my-8">
   <header tuiHeader>
     <h2 tuiTitle>Current Reservation</h2>
   </header>
+  <div class="content">
+    <!-- Check if there are current reservations -->
+    @if (currentReservations.length > 0) {
+    <!-- Iterate over current reservations -->
+    @for (reservation of (currentReservations || []); track $index) {
+    <div class="reservation-item">
+      <p>Reservation ID: {{ reservation.id }}</p>
+      <!-- <p>Guest: {{ reservation.guestName }}</p>
+          <p>Check-In: {{ reservation.checkIn | date }}</p>
+          <p>Check-Out: {{ reservation.checkOut | date }}</p> -->
+    </div>
+    <hr />
+    } } @else {
+    <p>No current reservations available.</p>
+    }
+  </div>
 </div>
 
+<!-- Upcoming Reservations Card -->
 <div tuiAppearance="floating" tuiCardLarge class="my-8">
   <header tuiHeader>
     <h2 tuiTitle>
-      Upcomming Reservations
-      <span tuiSubtitle>Total upcomming reservations is: </span>
+      Upcoming Reservations
+      <span tuiSubtitle
+        >Total upcoming reservations is: {{ upcomingReservations.length }}</span
+      >
     </h2>
   </header>
+  <div class="content">
+    <!-- Check if there are upcoming reservations -->
+    @if (upcomingReservations.length > 0) {
+    <!-- Iterate over upcoming reservations -->
+    @for ( reservation of (upcomingReservations || []); track $index) {
+    <div class="reservation-item">
+      <!-- <p>Reservation ID: {{ reservation.id }}</p>
+          <p>Guest: {{ reservation.guestName }}</p>
+          <p>Check-In: {{ reservation.checkIn | date }}</p>
+          <p>Check-Out: {{ reservation.checkOut | date }}</p> -->
+    </div>
+    <hr />
+    } } @else {
+    <p>No upcoming reservations available.</p>
+    }
+  </div>
 </div>
 
 } @else {
