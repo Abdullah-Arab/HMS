@@ -13,4 +13,104 @@
   }
 </tui-tabs>
 
-@if (activeItemIndex == 0){ we }@else { oui }
+@if (activeItemIndex == 0){
+<!-- Reservations List -->
+<div tuiCardMedium tuiAppearance="neutral" class="mb-4">
+  <div tuiHeader>
+    <h1 tuiTitle>
+      {{ reservationsData()?.pagination?.total || 0 }}
+      <span tuiSubtitle>Reservations</span>
+    </h1>
+  </div>
+</div>
+
+<!-- Pagination Controls -->
+<div class="flex items-center justify-between mb-4">
+  <div>
+    <span class="tui-text_body-m">Items per page:</span>
+    <select
+      tuiSelect
+      [ngModel]="pageSize"
+      (ngModelChange)="onLimitChange($event)"
+    >
+      @for (option of pageSizeOptions; track option) {
+      <option [value]="option">{{ option }}</option>
+      }
+    </select>
+  </div>
+  <div>
+    <span class="tui-text_body-m">
+      Page {{ currentPage + 1 }} of
+      {{ reservationsData()?.pagination?.totalPages || 1 }}
+    </span>
+  </div>
+</div>
+
+@if (isLoading()) {
+<tui-loader [showLoader]="true"></tui-loader>
+} @else if (reservationsData()?.status == 'error') {
+<p class="tui-text_h1">Oops!</p>
+<p class="tui-text_body-xl">{{ reservationsData()?.message }}</p>
+} @else {
+<table tuiTable [size]="'m'" class="w-full">
+  <thead>
+    <tr>
+      <th tuiTh>#</th>
+      <th tuiTh>Guest Name</th>
+      <th tuiTh>Room Number</th>
+      <th tuiTh>Check-In Date</th>
+      <th tuiTh>Check-Out Date</th>
+      <th tuiTh>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody tuiTbody>
+    @for (reservation of (reservationsData()?.data || []); track $index) {
+    <tr>
+      <td tuiTd>
+        <span tuiTitle>
+          {{ $index + 1 + currentPage * pageSize }}
+        </span>
+      </td>
+      <td tuiTd>
+        <span tuiTitle>{{ reservation.guest }}</span>
+      </td>
+      <td tuiTd>
+        <span tuiTitle>{{ reservation.room }}</span>
+      </td>
+      <td tuiTd>
+        <span tuiTitle>{{ reservation.checkin_date | date }}</span>
+      </td>
+      <td tuiTd>
+        <span tuiTitle>{{ reservation.checkout_date | date }}</span>
+      </td>
+      <td tuiTd>
+        <span tuiStatus>
+          <button
+            appearance="outline"
+            tuiButton
+            type="button"
+            [routerLink]="['/reservations', reservation.id]"
+          >
+            Details
+          </button>
+        </span>
+      </td>
+    </tr>
+    }
+  </tbody>
+  <tfoot>
+    <tr class="bg-white pt-4">
+      <td colspan="6">
+        @if (reservationsData()?.pagination?.totalPages) {
+        <tui-pagination
+          [length]="reservationsData()!.pagination!.totalPages"
+          [(index)]="currentPage"
+          (indexChange)="onPageChange($event)"
+        ></tui-pagination>
+        }
+      </td>
+    </tr>
+  </tfoot>
+</table>
+} }@else { oui }
