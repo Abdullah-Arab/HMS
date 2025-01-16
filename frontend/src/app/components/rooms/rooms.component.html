@@ -10,7 +10,7 @@
 <div tuiCardMedium tuiAppearance="neutral" class="mb-4">
   <div tuiHeader>
     <h1 tuiTitle>
-      {{ totalRecords || 0 }}
+      {{ roomsData()?.pagination?.total || 0 }}
       <span tuiSubtitle>Rooms</span>
     </h1>
   </div>
@@ -33,16 +33,16 @@
   <div>
     <span class="tui-text_body-m">
       Page {{ currentPage + 1 }} of
-      {{ totalPages || 1 }}
+      {{ roomsData()?.pagination?.totalPages || 1 }}
     </span>
   </div>
 </div>
 
-@if (isLoading) {
+@if (isLoading()) {
 <tui-loader [showLoader]="true"></tui-loader>
-} @else if (hasError) {
+} @else if (roomsData()?.status == 'error') {
 <p class="tui-text_h1">Opss!</p>
-<p class="tui-text_body-xl">{{ errorMesage }}</p>
+<p class="tui-text_body-xl">{{ roomsData()?.message }}</p>
 } @else {
 <table tuiTable [size]="'m'" class="w-full">
   <thead>
@@ -58,7 +58,7 @@
   </thead>
 
   <tbody tuiTbody>
-    @for (room of (rooms || []); track $index) {
+    @for (room of (roomsData()?.data || []); track $index) {
     <tr>
       <td tuiTd>
         <span tuiTitle>
@@ -98,9 +98,9 @@
   <tfoot>
     <tr class="bg-white pt-4">
       <td colspan="7">
-        @if (totalPages) {
+        @if (roomsData()?.pagination?.totalPages) {
         <tui-pagination
-          [length]="totalPages"
+          [length]="roomsData()!.pagination!.totalPages"
           [(index)]="currentPage"
           (indexChange)="onPageChange($event)"
         ></tui-pagination>
