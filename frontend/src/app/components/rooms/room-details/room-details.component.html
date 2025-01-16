@@ -15,7 +15,7 @@
 <!-- Tab Content -->
 <!-- {{ activeItemIndex }} -->
 @if (activeItemIndex === 0) {
-<div tuiCardLarge [style.max-width.rem]="36">
+<div tuiCardLarge>
   <header tuiHeader>
     <h2 tuiTitle>
       Room Details
@@ -23,12 +23,7 @@
     </h2>
   </header>
 
-  <form
-    [formGroup]="roomForm"
-    tuiForm="m"
-    (ngSubmit)="onSubmit()"
-    [style.max-width.rem]="32"
-  >
+  <form [formGroup]="roomForm" tuiForm="m" (ngSubmit)="onSubmit()">
     <tui-textfield>
       <label tuiLabel>Room Number</label>
       <input formControlName="number" tuiTextfield placeholder="101" />
@@ -36,6 +31,7 @@
     <tui-error
       formControlName="number"
       [error]="[] | tuiFieldError | async"
+      class="mb-4"
     ></tui-error>
 
     <tui-textfield>
@@ -49,6 +45,7 @@
     <tui-error
       formControlName="name"
       [error]="[] | tuiFieldError | async"
+      class="mb-4"
     ></tui-error>
 
     <tui-textfield>
@@ -58,6 +55,7 @@
     <tui-error
       formControlName="capacity"
       [error]="[] | tuiFieldError | async"
+      class="mb-4"
     ></tui-error>
     @if (!isEditing) {
     <footer class="flex justify-end m-8">
