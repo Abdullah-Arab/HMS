@@ -89,7 +89,14 @@ export class GuestDetailsComponent {
       });
     this.guestForm.disable(); // Disable the form initially
   }
-
+  readonly tabs = signal([
+    { title: 'Details', icon: 'book-text' },
+    { title: 'History', icon: 'history' },
+  ]);
+  protected activeItemIndex = 0;
+  protected onClick(item: string): void {
+    console.log('Clicked', item);
+  }
   fetchReservations() {
     const params = { page: 1, limit: 10, guestId: this.guestId! };
 

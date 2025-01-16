@@ -1,13 +1,31 @@
 <app-title [title]="'Guest: ' + guest?.name" actionTitle="'Edit'" />
 
-<!-- Guest Details Form -->
-<div tuiCardLarge tuiAppearance="floating" class="my-8">
+<!-- Tabs -->
+<tui-tabs [(activeItemIndex)]="activeItemIndex" class="mb-4">
+  @for (item of tabs(); track $index) {
+  <button
+    [iconStart]="'@tui.' + item.icon"
+    tuiTab
+    type="button"
+    (click)="onClick(item.title)"
+  >
+    {{ item.title }}
+  </button>
+  }
+</tui-tabs>
+
+<!-- Tab Content -->
+@if (activeItemIndex === 0) {
+<!-- Guest Details Tab -->
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
   <header tuiHeader>
-    <h2 tuiTitle>Guest Details</h2>
-    <span tuiSubtitle>View or edit guest information</span>
+    <h2 tuiTitle>
+      Guest Details
+      <span tuiSubtitle>View or edit guest information</span>
+    </h2>
   </header>
 
-  <form [formGroup]="guestForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="guestForm" tuiForm="m" (ngSubmit)="onSubmit()">
     <tui-textfield>
       <label tuiLabel>Full Name</label>
       <input formControlName="name" tuiTextfield placeholder="Guest Name" />
@@ -15,6 +33,7 @@
     <tui-error
       formControlName="name"
       [error]="[] | tuiFieldError | async"
+      class="mb-4"
     ></tui-error>
 
     <tui-textfield>
@@ -28,26 +47,30 @@
     <tui-error
       formControlName="email"
       [error]="[] | tuiFieldError | async"
+      class="mb-4"
     ></tui-error>
 
     <tui-textfield>
       <label tuiLabel>Phone</label>
-      <input
-        formControlName="phone"
-        tuiTextfield
-        placeholder="1234567890"
-      />
+      <input formControlName="phone" tuiTextfield placeholder="1234567890" />
     </tui-textfield>
     <tui-error
       formControlName="phone"
       [error]="[] | tuiFieldError | async"
+      class="mb-4"
     ></tui-error>
 
-    <footer class="flex justify-end mt-8">
+    @if (!isEditing) {
+    <footer class="flex justify-end m-8">
       <button tuiButton appearance="danger" type="button" (click)="onDelete()">
         Delete
       </button>
-      @if (isEditing) {
+      <button tuiButton appearance="primary" type="button" (click)="onEdit()">
+        Edit
+      </button>
+    </footer>
+    } @else {
+    <footer class="flex justify-end m-8">
       <button
         tuiButton
         appearance="secondary"
@@ -56,56 +79,75 @@
       >
         Cancel
       </button>
-      }
       <button tuiButton type="submit" [disabled]="guestForm.invalid">
-        {{ isEditing ? 'Save' : 'Edit' }}
+        Save
       </button>
     </footer>
+    }
   </form>
 </div>
 
-<!-- Reservations -->
-<div tuiCardLarge tuiAppearance="floating" class="my-8">
+<!-- Current Reservations Tab -->
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
   <header tuiHeader>
-    <h2 tuiTitle>Reservations</h2>
+    <h2 tuiTitle>Current Reservations</h2>
   </header>
-
-  @if (currentReservations.length > 0) {
-  <div>
-    <h3>Current Reservations</h3>
-    <ul>
-      @for (reservation of currentReservations; track $index) {
-      <li>
-       <p>Reservation ID: {{ reservation.id }}</p>
-      </li>
-      }
-    </ul>
-  </div>
-  }
-
-  @if (upcomingReservations.length > 0) {
-  <div>
-    <h3>Upcoming Reservations</h3>
-    <ul>
-      @for (reservation of upcomingReservations; track $index) {
-      <li>
+  <div class="content">
+    @if (currentReservations.length > 0) { @for (reservation of
+    currentReservations; track $index) {
+    <div class="reservation-item">
       <p>Reservation ID: {{ reservation.id }}</p>
-      </li>
-      }
-    </ul>
+    </div>
+    <hr />
+    } } @else {
+    <p>No current reservations available.</p>
+    }
   </div>
-  }
-
-  @if (pastReservations.length > 0) {
-  <div>
-    <h3>Past Reservations</h3>
-    <ul>
-      @for (reservation of pastReservations; track $index) {
-      <li>
-       <p>Reservation ID: {{ reservation.id }}</p>
-      </li>
-      }
-    </ul>
-  </div>
-  }
 </div>
+
+<!-- Upcoming Reservations Tab -->
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Upcoming Reservations
+      <span tuiSubtitle
+        >Total upcoming reservations is: {{ upcomingReservations.length }}</span
+      >
+    </h2>
+  </header>
+  <div class="content">
+    @if (upcomingReservations.length > 0) { @for (reservation of
+    upcomingReservations; track $index) {
+    <div class="reservation-item">
+      <p>Reservation ID: {{ reservation.id }}</p>
+    </div>
+    <hr />
+    } } @else {
+    <p>No upcoming reservations available.</p>
+    }
+  </div>
+</div>
+} @if (activeItemIndex === 1) {
+<!-- Past Reservations Tab -->
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Past Reservations
+      <span tuiSubtitle
+        >Total past reservations is: {{ pastReservations.length }}</span
+      >
+    </h2>
+  </header>
+  <div class="content">
+    @if (pastReservations.length > 0) { @for (reservation of pastReservations;
+    track $index) {
+    <div class="reservation-item">
+      <p>Reservation ID: {{ reservation.id }}</p>
+    </div>
+    <hr />
+    } } @else {
+    <p>No past reservations available.</p>
+    }
+  </div>
+</div>
+}
