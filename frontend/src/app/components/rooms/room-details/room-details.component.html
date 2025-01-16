@@ -60,16 +60,16 @@
       [error]="[] | tuiFieldError | async"
     ></tui-error>
     @if (!isEditing) {
-    <footer>
-      <button tuiButton appearance="primary" type="button" (click)="onEdit()">
-        Edit
-      </button>
+    <footer class="flex justify-end m-8">
       <button tuiButton appearance="danger" type="button" (click)="onDelete()">
         Delete
       </button>
+      <button tuiButton appearance="primary" type="button" (click)="onEdit()">
+        Edit
+      </button>
     </footer>
     }@else {
-    <footer>
+    <footer class="flex justify-end m-8">
       <button
         tuiButton
         appearance="secondary"
