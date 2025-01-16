@@ -25,6 +25,7 @@ router.get(
   "/upcoming",
   validate(reservationByRoomOrGuestSchema, "query"),
   reservationsController.getUpcomingReservations
+  
 ); // GET /reservations/upcoming
 
 // Route to get past reservations
