@@ -23,6 +23,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AsyncPipe, Location } from '@angular/common';
+import { ReservationsService } from 'src/app/services/reservations.service';
+import Reservation from 'types/reservation';
 
 @Component({
   selector: 'app-room-details',
@@ -48,6 +50,11 @@ export class RoomDetailsComponent {
   roomId: string | null = null;
   room: Room | undefined = undefined;
   roomService: RoomService = inject(RoomService);
+  reservationsService: ReservationsService = inject(ReservationsService);
+
+  currentReservations: Reservation[] = [];
+  pastReservations: Reservation[] = [];
+  upcomingReservations: Reservation[] = [];
 
   protected readonly roomForm = new FormGroup({
     number: new FormControl<number | null>(null, [
@@ -91,6 +98,7 @@ export class RoomDetailsComponent {
 
     // get room details by id
     this.fetchRoomDetails();
+    this.fetchReservations();
   }
 
   // get room details by id
@@ -105,6 +113,35 @@ export class RoomDetailsComponent {
       });
     });
     this.roomForm.disable(); // Keep the form disabled initially
+  }
+
+  fetchReservations() {
+    const params = { page: 1, limit: 10, roomId: this.roomId! };
+
+    this.reservationsService.getCurrentReservations(params).subscribe({
+      next: (response) => {
+        console.log('Current Reservations:', response);
+        this.currentReservations = response.data ?? [];
+      },
+      error: (error) =>
+        console.error('Error fetching current reservations:', error),
+    });
+
+    this.reservationsService.getPastReservations(params).subscribe(
+      (response) => {
+        console.log('Past Reservations:', response);
+        this.pastReservations = response.data ?? [];
+      },
+      (error) => console.error('Error fetching past reservations:', error)
+    );
+
+    this.reservationsService.getUpcomingReservations(params).subscribe(
+      (response) => {
+        console.log('Upcoming Reservations:', response);
+        this.upcomingReservations = response.data ?? [];
+      },
+      (error) => console.error('Error fetching upcoming reservations:', error)
+    );
   }
 
   onEdit() {
