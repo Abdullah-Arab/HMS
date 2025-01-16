@@ -1,1 +1,104 @@
-<p>guests works!</p>
+<!-- Title -->
+<app-title
+  [title]="'Guests Management'"
+  [actionTitle]="'Add Guest'"
+  routerLink="/guests/new-guest"
+  [showAction]="true"
+/>
+
+<!-- Guests List -->
+<div tuiCardMedium tuiAppearance="neutral" class="mb-4">
+  <div tuiHeader>
+    <h1 tuiTitle>
+      {{ guestsData()?.pagination?.total || 0 }}
+      <span tuiSubtitle>Guests</span>
+    </h1>
+  </div>
+</div>
+
+<!-- Pagination Controls -->
+<div class="flex items-center justify-between mb-4">
+  <div>
+    <span class="tui-text_body-m">Items per page:</span>
+    <select
+      tuiSelect
+      [ngModel]="pageSize"
+      (ngModelChange)="onLimitChange($event)"
+    >
+      @for (option of pageSizeOptions; track option) {
+      <option [value]="option">{{ option }}</option>
+      }
+    </select>
+  </div>
+  <div>
+    <span class="tui-text_body-m">
+      Page {{ currentPage + 1 }} of
+      {{ guestsData()?.pagination?.totalPages || 1 }}
+    </span>
+  </div>
+</div>
+
+@if (isLoading()) {
+<tui-loader [showLoader]="true"></tui-loader>
+} @else if (guestsData()?.status == 'error') {
+<p class="tui-text_h1">Opss!</p>
+<p class="tui-text_body-xl">{{ guestsData()?.message }}</p>
+} @else {
+<table tuiTable [size]="'m'" class="w-full">
+  <thead>
+    <tr>
+      <th tuiTh></th>
+      <th tuiTh>Guest Name</th>
+      <th tuiTh>Email</th>
+      <th tuiTh>Phone</th>
+      <th tuiTh>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody tuiTbody>
+    @for (guest of (guestsData()?.data || []); track $index) {
+    <tr>
+      <td tuiTd>
+        <span tuiTitle>
+          {{ $index + 1 + currentPage * pageSize }}
+        </span>
+      </td>
+      <td tuiTd>
+        <span tuiTitle>{{ guest.name }}</span>
+      </td>
+      <td tuiTd>
+        <span tuiTitle>{{ guest.email }}</span>
+      </td>
+      <td tuiTd>
+        <span tuiTitle>{{ guest.phone }}</span>
+      </td>
+      <td tuiTd>
+        <span tuiStatus>
+          <button
+            appearance="outline"
+            tuiButton
+            type="button"
+            [routerLink]="['/guests', guest.id]"
+          >
+            Details
+          </button>
+        </span>
+      </td>
+    </tr>
+    }
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="5">
+        @if (guestsData()?.pagination?.totalPages) {
+        <tui-pagination
+          [length]="guestsData()!.pagination!.totalPages"
+          [(index)]="currentPage"
+          (indexChange)="onPageChange($event)"
+        ></tui-pagination>
+        }
+      </td>
+    </tr>
+  </tfoot>
+</table>
+}
