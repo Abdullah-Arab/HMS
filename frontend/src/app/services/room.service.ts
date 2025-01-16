@@ -44,7 +44,7 @@ export class RoomService {
   };
 
   // Update an existing room
-  updateRoom = (id: string, room: Room): Observable<ApiResponse<Room>> => {
+  updateRoom = (id: string, room: Partial<Room>): Observable<ApiResponse<Room>> => {
     return this.api.put<ApiResponse<Room>>(`${this.url}/${id}`, room, {
       responseType: 'json',
     });

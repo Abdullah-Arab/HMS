@@ -22,7 +22,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 
 @Component({
   selector: 'app-room-details',
@@ -68,7 +68,8 @@ export class RoomDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private location: Location
   ) {}
 
   readonly tabs = signal([
@@ -81,19 +82,7 @@ export class RoomDetailsComponent {
     console.log('Clicked', item);
   }
 
-  // get room details by id
-
-  fetchRoomDetails() {
-    this.roomService.getRoom(this.roomId!).subscribe((response) => {
-      console.log('Room Details:', response);
-      this.room = response.data;
-      this.roomForm.patchValue({
-        number: this.room?.room_number,
-        name: this.room?.name,
-        capacity: this.room?.capacity,
-      });
-    });
-  }
+  protected isEditing = false; // Tracks whether the form is in editing mode
 
   ngOnInit(): void {
     // Retrieve the 'id' parameter from the route
@@ -104,7 +93,60 @@ export class RoomDetailsComponent {
     this.fetchRoomDetails();
   }
 
+  // get room details by id
+  fetchRoomDetails() {
+    this.roomService.getRoom(this.roomId!).subscribe((response) => {
+      console.log('Room Details:', response);
+      this.room = response.data;
+      this.roomForm.patchValue({
+        number: this.room?.room_number,
+        name: this.room?.name,
+        capacity: this.room?.capacity,
+      });
+    });
+    this.roomForm.disable(); // Keep the form disabled initially
+  }
+
+  onEdit() {
+    this.isEditing = true;
+    this.roomForm.enable();
+  }
+
+  onCancel() {
+    this.isEditing = false;
+    this.roomForm.reset({
+      number: this.room?.room_number,
+      name: this.room?.name,
+      capacity: this.room?.capacity,
+    });
+    this.roomForm.disable();
+  }
+  onDelete() {
+    if (confirm('Are you sure you want to delete this room?')) {
+      this.roomService.deleteRoom(this.roomId!).subscribe(() => {
+        alert('Room deleted successfully!');
+        // Redirect or perform other actions after deletion
+        this.location.back();
+      });
+    }
+  }
+
   onSubmit() {
     console.log('Form Submitted:', this.roomForm.value);
+    // Call the service to save changes
+    this.roomService
+      .updateRoom(this.roomId!, {
+        name: this.roomForm.value.name ?? '',
+        room_number: this.roomForm.value.number!,
+        capacity: this.roomForm.value.capacity!,
+      })
+      .subscribe((response) => {
+        console.log('Room Updated:', response);
+        this.isEditing = false;
+        this.roomForm.disable();
+      });
+
+    this.isEditing = false;
+    this.roomForm.disable();
   }
 }

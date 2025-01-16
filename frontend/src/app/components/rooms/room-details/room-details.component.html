@@ -19,7 +19,7 @@
   <header tuiHeader>
     <h2 tuiTitle>
       Room Details
-      <span tuiSubtitle>Edit room information below</span>
+      <span tuiSubtitle>View or edit room information</span>
     </h2>
   </header>
 
@@ -29,7 +29,7 @@
     (ngSubmit)="onSubmit()"
     [style.max-width.rem]="32"
   >
-    <tui-textfield class="mb-4">
+    <tui-textfield>
       <label tuiLabel>Room Number</label>
       <input formControlName="number" tuiTextfield placeholder="101" />
     </tui-textfield>
@@ -38,7 +38,7 @@
       [error]="[] | tuiFieldError | async"
     ></tui-error>
 
-    <tui-textfield class="mb-4">
+    <tui-textfield>
       <label tuiLabel>Room Name</label>
       <input
         formControlName="name"
@@ -51,7 +51,7 @@
       [error]="[] | tuiFieldError | async"
     ></tui-error>
 
-    <tui-textfield class="mb-4">
+    <tui-textfield>
       <label tuiLabel>Capacity</label>
       <input formControlName="capacity" tuiTextfield placeholder="50" />
     </tui-textfield>
@@ -59,15 +59,30 @@
       formControlName="capacity"
       [error]="[] | tuiFieldError | async"
     ></tui-error>
-
+    @if (!isEditing) {
     <footer>
-      <button tuiButton appearance="secondary" type="button" class="m-4">
+      <button tuiButton appearance="primary" type="button" (click)="onEdit()">
+        Edit
+      </button>
+      <button tuiButton appearance="danger" type="button" (click)="onDelete()">
+        Delete
+      </button>
+    </footer>
+    }@else {
+    <footer>
+      <button
+        tuiButton
+        appearance="secondary"
+        type="button"
+        (click)="onCancel()"
+      >
         Cancel
       </button>
-      <button tuiButton type="submit" [disabled]="roomForm.invalid" class="m-4">
+      <button tuiButton type="submit" [disabled]="roomForm.invalid">
         Save
       </button>
     </footer>
+    }
   </form>
 </div>
 

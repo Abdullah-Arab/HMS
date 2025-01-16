@@ -1,6 +1,6 @@
 type Room = {
   id: number;
-  name: string;
+  name?: string;
   room_number: number;
   capacity: number;
   created_at: Date;
