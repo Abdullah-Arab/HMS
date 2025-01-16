@@ -1,0 +1,111 @@
+<app-title [title]="'Guest: ' + guest?.name" actionTitle="'Edit'" />
+
+<!-- Guest Details Form -->
+<div tuiCardLarge tuiAppearance="floating" class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>Guest Details</h2>
+    <span tuiSubtitle>View or edit guest information</span>
+  </header>
+
+  <form [formGroup]="guestForm" (ngSubmit)="onSubmit()">
+    <tui-textfield>
+      <label tuiLabel>Full Name</label>
+      <input formControlName="name" tuiTextfield placeholder="Guest Name" />
+    </tui-textfield>
+    <tui-error
+      formControlName="name"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Email</label>
+      <input
+        formControlName="email"
+        tuiTextfield
+        placeholder="guest@example.com"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="email"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Phone</label>
+      <input
+        formControlName="phone"
+        tuiTextfield
+        placeholder="1234567890"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="phone"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
+
+    <footer class="flex justify-end mt-8">
+      <button tuiButton appearance="danger" type="button" (click)="onDelete()">
+        Delete
+      </button>
+      @if (isEditing) {
+      <button
+        tuiButton
+        appearance="secondary"
+        type="button"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      }
+      <button tuiButton type="submit" [disabled]="guestForm.invalid">
+        {{ isEditing ? 'Save' : 'Edit' }}
+      </button>
+    </footer>
+  </form>
+</div>
+
+<!-- Reservations -->
+<div tuiCardLarge tuiAppearance="floating" class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>Reservations</h2>
+  </header>
+
+  @if (currentReservations.length > 0) {
+  <div>
+    <h3>Current Reservations</h3>
+    <ul>
+      @for (reservation of currentReservations; track $index) {
+      <li>
+       <p>Reservation ID: {{ reservation.id }}</p>
+      </li>
+      }
+    </ul>
+  </div>
+  }
+
+  @if (upcomingReservations.length > 0) {
+  <div>
+    <h3>Upcoming Reservations</h3>
+    <ul>
+      @for (reservation of upcomingReservations; track $index) {
+      <li>
+      <p>Reservation ID: {{ reservation.id }}</p>
+      </li>
+      }
+    </ul>
+  </div>
+  }
+
+  @if (pastReservations.length > 0) {
+  <div>
+    <h3>Past Reservations</h3>
+    <ul>
+      @for (reservation of pastReservations; track $index) {
+      <li>
+       <p>Reservation ID: {{ reservation.id }}</p>
+      </li>
+      }
+    </ul>
+  </div>
+  }
+</div>

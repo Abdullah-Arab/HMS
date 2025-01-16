@@ -75,7 +75,6 @@ export class RoomDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
     private location: Location
   ) {}
 
