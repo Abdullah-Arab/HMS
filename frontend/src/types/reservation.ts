@@ -13,8 +13,8 @@ import Room from "./room";
 
 type Reservation = {
   id: number;
-  guest: Guest;
-  room: Room[];
+  guestId: number;
+  roomIds: string[];
   checkin_date: string;
   checkout_date: string;
   status: string;

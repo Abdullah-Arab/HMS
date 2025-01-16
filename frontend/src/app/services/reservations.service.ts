@@ -9,7 +9,7 @@ import { PaginationParams } from 'types/types';
   providedIn: 'root',
 })
 export class ReservationsService {
-  private url = 'http://localhost:3345/api/v1/reservationss';
+  private url = 'http://localhost:3345/api/v1/reservations';
 
   constructor(private api: ApiService) {}
 
