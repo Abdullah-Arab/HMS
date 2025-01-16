@@ -6,6 +6,7 @@ import { ReservationsComponent } from './components/reservations/reservations.co
 import { RoomDetailsComponent } from './components/rooms/room-details/room-details.component';
 import { NewRoomComponent } from './components/rooms/new-room/new-room.component';
 import { GuestDetailsComponent } from './components/guests/guest-details/guest-details.component';
+import { NewGuestComponent } from './components/guests/new-guest/new-guest.component';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,10 @@ export const routes: Routes = [
       {
         path: '',
         component: GuestsComponent,
+      },
+      {
+        path: 'new-guest',
+        component: NewGuestComponent,
       },
       {
         path: ':id',

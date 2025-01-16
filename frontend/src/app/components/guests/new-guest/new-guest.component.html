@@ -1,1 +1,60 @@
-<p>new-guest works!</p>
+<div tuiAppearance="floating" tuiCardLarge class="my-8">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Add a New Guest
+      <span tuiSubtitle>
+        Fill in the form below to add a new guest to the system.
+      </span>
+    </h2>
+  </header>
+
+  <form [formGroup]="guestForm" tuiForm="m" (ngSubmit)="onSubmit()">
+    <tui-textfield>
+      <label tuiLabel>Full Name</label>
+      <input formControlName="name" tuiTextfield placeholder="Guest Name" />
+    </tui-textfield>
+    <tui-error
+      formControlName="name"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Email</label>
+      <input
+        formControlName="email"
+        tuiTextfield
+        placeholder="guest@example.com"
+      />
+    </tui-textfield>
+    <tui-error
+      formControlName="email"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <tui-textfield>
+      <label tuiLabel>Phone</label>
+      <input formControlName="phone" tuiTextfield placeholder="1234567890" />
+    </tui-textfield>
+    <tui-error
+      formControlName="phone"
+      [error]="[] | tuiFieldError | async"
+      class="mb-4"
+    ></tui-error>
+
+    <footer class="flex justify-end m-8">
+      <button
+        tuiButton
+        appearance="secondary"
+        type="button"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button tuiButton type="submit" [disabled]="guestForm.invalid">
+        Save
+      </button>
+    </footer>
+  </form>
+</div>
