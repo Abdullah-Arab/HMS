@@ -32,17 +32,17 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
-  migrations:
-    build:
-      context: ./backend
-    command:
-      [
-        "sh",
-        "-c",
-        "until pg_isready -h db -U postgres; do sleep 1; done; npx knex migrate:latest && npx knex seed:run",
-      ]
-    depends_on:
-      - db
+  # migrations:
+  #   build:
+  #     context: ./backend
+  #   command:
+  #     [
+  #       "sh",
+  #       "-c",
+  #       "until pg_isready -h db -U postgres; do sleep 1; done; npx knex migrate:latest && npx knex seed:run",
+  #     ]
+  #   depends_on:
+  #     - db
 
 volumes:
   db_data:
